@@ -84,3 +84,22 @@ git config --global --list
 git config --global key "value"
 ```
 
+### merge
+
+```bash
+#Step 1. Fetch and check out the branch for this merge request
+
+git fetch origin
+git checkout -b "feature-refactoring" "origin/feature-refactoring"
+#Step 2. Review the changes locally
+
+#Step 3. Merge the branch and fix any conflicts that come up
+
+git fetch origin
+git checkout "origin/develop"
+git merge --no-ff "feature-refactoring"
+#Step 4. Push the result of the merge to GitLab
+
+git push origin "develop"
+```
+

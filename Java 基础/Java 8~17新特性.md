@@ -16,9 +16,75 @@
 
 # Java 9~17
 
+**JDK9：**
+
+-   interface private method
+
+    ```java
+    public interface MyInterface {
+        //定义私有方法
+        private void m1() {
+            System.out.println("123");
+        }
+    
+        //default中调用
+        default void m2() {
+            m1();
+        }
+    }
+    ```
+    
+-   try with resource改进
+
+    ```java
+        public static void main(String[] args) throws FileNotFoundException {
+            //jdk8以前
+            try (FileInputStream fileInputStream = new FileInputStream("");
+                 FileOutputStream fileOutputStream = new FileOutputStream("")) {
+    
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    
+            //jdk9:改进了try-with-resources语句，可以在try外进行初始化，在括号内引用，即可实现资源自动关闭
+            FileInputStream fis = new FileInputStream("abc.txt");
+            FileOutputStream fos = new FileOutputStream("def.txt");
+            //多资源用分号隔开
+            try (fis; fos) {
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    ```
+    
+-   `String`的实现底层由`char[]` 改为`byte[]`；
+
+-   集合增强；
+
+-   http client api 预览版；
+
+**JDK10：**
+
+-   局部变量类型推断：`var`
+
+    >仅适用于局部变量，增强for循环的索引，以及普通for循环的本地变量；它不能使用于方法形参，构造方法形参，方法返回类型等
+
+**JDK11：**
+
+-   String增强；
+-   Optional增强；
+-   InputStream增强；
+-   http client api 正式版；
+
+**JDK14：**
+
+-   NPE提示增强
+
 ## 1. JShell
 
+Preview: JDK 9
 
+ 交互式解释器
 
 ## 2. Textarea：`"""`
 
@@ -220,11 +286,22 @@ public final class Shadow {
 }
 ```
 
-### 6. switch 增强
+## 6. switch 增强
 
 **表达式改进**
 
 Preview: JDK 12 | Release: JDK 14
+
+-   简化break结构：`->`
+-   跳出switch：`yield`
+-   支持`null`值判断；
+
+**模式匹配**
+
+Preview: JDK 17
+
+-   支持将`instanceof`转换为`switch`语句；
+-   对于`enum`或`sealed`，编译器会进行完整性校验，如果已覆盖所有可能取值，则不再需要`default`分支；
 
 ```java
 String temperature ="";
@@ -244,11 +321,41 @@ switch (season) {
 }
 // now
 String temperature = switch (season) {
-    case null           -> "无"
     case SPRING, AUTUMN -> "温暖";
     case SUMMER         -> "炎热";
     case WINTER         -> "寒冷";
     default             -> "忽冷忽热";
 }
+
+// instanceof -> now 
+switch (o) {
+    case null -> "";
+    case Integer i -> String.format("int %d", i);
+    case Long l    -> String.format("long %d", l);
+    case Double d  -> String.format("double %f", d);
+    case String s  -> String.format("String %s", s);
+    default        -> o.toString();
+}
 ```
+
+## 7. ZGC
+
+Preview: JDK 11 | Release: JDK 15
+
+-   停顿时间不超过10ms；
+-   停顿时间不会随着堆的大小，或者活跃对象的大小而增加；
+-   支持8MB~4TB级别的堆（未来支持16TB）
+
+ZGC适用于大内存低延迟服务的内存管理和回收；
+
+## 8. Modular
+
+Release: JDK 9
+
+-   模块化JDK本身;
+
+-   为应用程序的使用提供模块化系统。
+
+
+模块化系统是基于`jar包`和`类`之间存在的，目的在于尽可能的减少jar中多余类的加载，保证整体项目运行时的效率；
 

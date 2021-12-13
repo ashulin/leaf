@@ -1,11 +1,13 @@
 package com.github.ashulin.algorithms.leetcode;
 
+import com.github.ashulin.algorithms.doc.Complexity;
 import com.github.ashulin.algorithms.doc.SolutionFor;
 
 /**
  * @author Li Zongwen
  * @since 2021/12/13
  */
+@Complexity(time = "O(log n)", space = "O(1)")
 public class NewtonRaphson {
     /**
      * 给你一个非负整数 x ，计算并返回x的 算术平方根 。
@@ -18,7 +20,7 @@ public class NewtonRaphson {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-69", time = "O(log n)", space = "O(1)")
+    @SolutionFor(value = "LC-69")
     public int sqrt(int x) {
         long xi = x;
         while (xi * xi > x) {

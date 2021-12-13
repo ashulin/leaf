@@ -40,18 +40,4 @@ public @interface SolutionFor {
      * @return the problem
      */
     String[] value();
-
-    /**
-     * The space complexity of this solution.
-     *
-     * @return space complexity
-     */
-    String space() default "";
-
-    /**
-     * The time complexity of this solution.
-     *
-     * @return time complexity
-     */
-    String time() default "";
 }

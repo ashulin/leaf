@@ -18,12 +18,14 @@
 
 package com.github.ashulin.algorithms.leetcode.array;
 
+import com.github.ashulin.algorithms.doc.Complexity;
 import com.github.ashulin.algorithms.doc.SolutionFor;
 
 /**
  * @author Li Zongwen
  * @since 2021/12/13
  */
+@Complexity(time = "O(log n)", space = "O(1)")
 public class BinarySearch {
 
     /**
@@ -31,7 +33,7 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-704", time = "O(log n)", space = "O(1)")
+    @SolutionFor(value = "LC-704")
     public int search(int[] nums, int target) {
         if (nums == null
                 || nums.length == 0
@@ -66,7 +68,7 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-35", time = "O(log n)", space = "O(1)")
+    @SolutionFor(value = "LC-35")
     public int searchInsert(int[] nums, int target) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -105,7 +107,7 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-34", time = "O(log n)", space = "O(1)")
+    @SolutionFor(value = "LC-34")
     public int[] searchRange(int[] nums, int target) {
         int[] result = new int[] {-1, -1};
         if (nums == null
@@ -142,7 +144,7 @@ public class BinarySearch {
         return result;
     }
 
-    @SolutionFor(value = "LC-34", time = "O(log n)", space = "O(1)")
+    @SolutionFor(value = "LC-34")
     public int[] searchRange2(int[] nums, int target) {
         if (nums == null
                 || nums.length == 0
@@ -192,7 +194,7 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-69", time = "O(log n)", space = "O(1)")
+    @SolutionFor(value = "LC-69")
     public int mySqrt(int x) {
         if (x < 2) {
             return x;
@@ -219,7 +221,7 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-367", time = "O(log n)", space = "O(1)")
+    @SolutionFor(value = "LC-367")
     public boolean isPerfectSquare(int num) {
         int left = 0;
         int right = num;

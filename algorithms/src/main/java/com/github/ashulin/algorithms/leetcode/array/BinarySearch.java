@@ -33,7 +33,7 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-704")
+    @SolutionFor("LC-704")
     public int search(int[] nums, int target) {
         if (nums == null
                 || nums.length == 0
@@ -68,7 +68,7 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-35")
+    @SolutionFor("LC-35")
     public int searchInsert(int[] nums, int target) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -107,7 +107,7 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-34")
+    @SolutionFor("LC-34")
     public int[] searchRange(int[] nums, int target) {
         int[] result = new int[] {-1, -1};
         if (nums == null
@@ -144,7 +144,7 @@ public class BinarySearch {
         return result;
     }
 
-    @SolutionFor(value = "LC-34")
+    @SolutionFor("LC-34")
     public int[] searchRange2(int[] nums, int target) {
         if (nums == null
                 || nums.length == 0
@@ -194,7 +194,7 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-69")
+    @SolutionFor("LC-69")
     public int mySqrt(int x) {
         if (x < 2) {
             return x;
@@ -221,7 +221,7 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-367")
+    @SolutionFor("LC-367")
     public boolean isPerfectSquare(int num) {
         int left = 0;
         int right = num;

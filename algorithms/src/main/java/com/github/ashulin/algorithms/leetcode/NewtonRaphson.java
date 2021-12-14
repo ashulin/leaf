@@ -20,7 +20,7 @@ public class NewtonRaphson {
      *
      * @since 2021/12/13
      */
-    @SolutionFor(value = "LC-69")
+    @SolutionFor("LC-69")
     public int sqrt(int x) {
         long xi = x;
         while (xi * xi > x) {

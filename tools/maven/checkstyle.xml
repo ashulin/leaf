@@ -290,6 +290,7 @@ This file is based on the checkstyle file of Apache Beam.
 			<property name="scope" value="protected"/>
 			<property name="severity" value="error"/>
 			<property name="allowMissingParamTags" value="true"/>
+			<property name="tokens" value="INTERFACE_DEF,ENUM_DEF,ANNOTATION_DEF"/>
 		</module>
 
 		<module name="JavadocStyle">

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.github.ashulin.algorithms.leetcode.array;
+package com.github.ashulin.algorithms;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

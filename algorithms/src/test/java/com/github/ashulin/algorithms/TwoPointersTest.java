@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.github.ashulin.algorithms.leetcode.array;
+package com.github.ashulin.algorithms;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,8 +25,8 @@ import org.junit.jupiter.api.Test;
  * @author Li Zongwen
  * @since 2021/12/14
  */
-public class DoublePointerTest {
-    private final DoublePointer solution = new DoublePointer();
+public class TwoPointersTest {
+    private final TwoPointers solution = new TwoPointers();
 
     @Test
     public void testRemoveDuplicates() {
@@ -86,52 +86,5 @@ public class DoublePointerTest {
                 solution.sortedSquares(new int[] {-11, -9, -8, -7, -5}));
         Assertions.assertArrayEquals(
                 new int[] {0, 9, 49, 81, 144}, solution.sortedSquares(new int[] {-7, 0, 3, 9, 12}));
-    }
-
-    public static class SlidingWindowTest {
-        private final DoublePointer.SlidingWindow solution = new DoublePointer.SlidingWindow();
-
-        @Test
-        public void testMinSubArrayLen() {
-            Assertions.assertEquals(2, solution.minSubArrayLen(7, new int[] {2, 3, 1, 2, 4, 3}));
-            Assertions.assertEquals(
-                    1, solution.minSubArrayLen(4, new int[] {0, 0, 1, 1, 1, 2, 2, 3, 4}));
-            Assertions.assertEquals(
-                    0, solution.minSubArrayLen(100, new int[] {4, 4, 4, 4, 4, 4, 4, 4, 4}));
-        }
-
-        @Test
-        public void testTotalFruit() {
-            Assertions.assertEquals(3, solution.totalFruit(new int[] {1, 2, 1}));
-            Assertions.assertEquals(3, solution.totalFruit(new int[] {0, 1, 2, 2}));
-            Assertions.assertEquals(4, solution.totalFruit(new int[] {1, 2, 3, 2, 2}));
-            Assertions.assertEquals(3, solution.totalFruit(new int[] {1, 0, 3, 4, 3}));
-            Assertions.assertEquals(
-                    5, solution.totalFruit(new int[] {3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4}));
-        }
-
-        @Test
-        public void testTotalFruit2() {
-            Assertions.assertEquals(3, solution.totalFruit2(new int[] {1, 2, 1}));
-            Assertions.assertEquals(3, solution.totalFruit2(new int[] {0, 1, 2, 2}));
-            Assertions.assertEquals(4, solution.totalFruit2(new int[] {1, 2, 3, 2, 2}));
-            Assertions.assertEquals(3, solution.totalFruit2(new int[] {1, 0, 3, 4, 3}));
-            Assertions.assertEquals(
-                    5, solution.totalFruit2(new int[] {3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4}));
-        }
-
-        @Test
-        public void testMinWindow() {
-            Assertions.assertEquals("", solution.minWindow("a", "aa"));
-            Assertions.assertEquals("a", solution.minWindow("a", "a"));
-            Assertions.assertEquals("BANC", solution.minWindow("ADOBECODEBANC", "ABC"));
-        }
-
-        @Test
-        public void testMinWindow2() {
-            Assertions.assertEquals("", solution.minWindow2("a", "aa"));
-            Assertions.assertEquals("a", solution.minWindow2("a", "a"));
-            Assertions.assertEquals("BANC", solution.minWindow2("ADOBECODEBANC", "ABC"));
-        }
     }
 }

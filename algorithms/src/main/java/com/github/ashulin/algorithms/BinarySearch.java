@@ -16,16 +16,19 @@
  * limitations under the License.
  */
 
-package com.github.ashulin.algorithms.leetcode.array;
+package com.github.ashulin.algorithms;
 
 import com.github.ashulin.algorithms.doc.Complexity;
-import com.github.ashulin.algorithms.doc.SolutionFor;
+import com.github.ashulin.algorithms.doc.Source;
+import com.github.ashulin.algorithms.doc.Tag;
+import com.github.ashulin.algorithms.doc.Type;
 
 /**
  * @author Li Zongwen
  * @since 2021/12/13
  */
 @Complexity(time = "O(log n)", space = "O(1)")
+@Tag(Type.BINARY_SEARCH)
 public class BinarySearch {
 
     /**
@@ -33,7 +36,8 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor("LC-704")
+    @Source(704)
+    @Tag(Type.ARRAY)
     public int search(int[] nums, int target) {
         if (nums == null
                 || nums.length == 0
@@ -68,7 +72,8 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor("LC-35")
+    @Source(35)
+    @Tag(Type.ARRAY)
     public int searchInsert(int[] nums, int target) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -107,7 +112,8 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor("LC-34")
+    @Source(34)
+    @Tag(Type.ARRAY)
     public int[] searchRange(int[] nums, int target) {
         int[] result = new int[] {-1, -1};
         if (nums == null
@@ -144,7 +150,8 @@ public class BinarySearch {
         return result;
     }
 
-    @SolutionFor("LC-34")
+    @Source(34)
+    @Tag(Type.ARRAY)
     public int[] searchRange2(int[] nums, int target) {
         if (nums == null
                 || nums.length == 0
@@ -194,7 +201,8 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor("LC-69")
+    @Source(69)
+    @Tag(Type.MATH)
     public int mySqrt(int x) {
         if (x < 2) {
             return x;
@@ -221,7 +229,8 @@ public class BinarySearch {
      *
      * @since 2021/12/13
      */
-    @SolutionFor("LC-367")
+    @Source(367)
+    @Tag(Type.MATH)
     public boolean isPerfectSquare(int num) {
         int left = 0;
         int right = num;

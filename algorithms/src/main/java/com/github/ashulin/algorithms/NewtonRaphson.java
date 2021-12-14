@@ -1,7 +1,7 @@
-package com.github.ashulin.algorithms.leetcode;
+package com.github.ashulin.algorithms;
 
 import com.github.ashulin.algorithms.doc.Complexity;
-import com.github.ashulin.algorithms.doc.SolutionFor;
+import com.github.ashulin.algorithms.doc.Source;
 
 /**
  * @author Li Zongwen
@@ -20,7 +20,7 @@ public class NewtonRaphson {
      *
      * @since 2021/12/13
      */
-    @SolutionFor("LC-69")
+    @Source(69)
     public int sqrt(int x) {
         long xi = x;
         while (xi * xi > x) {

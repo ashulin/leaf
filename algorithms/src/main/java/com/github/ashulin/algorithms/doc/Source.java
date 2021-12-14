@@ -19,25 +19,20 @@
 package com.github.ashulin.algorithms.doc;
 
 import java.lang.annotation.Documented;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.CLASS;
 
-/**
- * @author Li Zongwen
- * @since 2021/12/13
- */
+/** 标记算法题来源. */
 @Documented
 @Retention(CLASS)
-@Target(METHOD)
-public @interface SolutionFor {
+@Target({METHOD})
+@Repeatable(Sources.class)
+public @interface Source {
+    SourceType type() default SourceType.LEET_CODE;
 
-    /**
-     * This is to answer a certain algorithm problem. For example, "LC-123".
-     *
-     * @return the problem
-     */
-    String[] value();
+    int value();
 }

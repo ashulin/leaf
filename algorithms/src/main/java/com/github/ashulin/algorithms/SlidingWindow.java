@@ -197,6 +197,7 @@ public class SlidingWindow {
 
     @Source(76)
     @Tag(Type.STRING)
+    @Tag(Type.HASH_MAP)
     public String minWindow2(String s, String t) {
         int[] target = new int[('z' - 'A') + 1];
         for (char c : t.toCharArray()) {

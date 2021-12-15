@@ -172,6 +172,7 @@ public class LinkedList {
      */
     @Source(value = 02_07, type = SourceType.CI6)
     @Tag(Type.TWO_POINTERS)
+    @Complexity(time = "O(n+m)", space = "O(1)")
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         ListNode top = headA;
         ListNode bottom = headB;
@@ -192,6 +193,7 @@ public class LinkedList {
     @Tag(Type.TWO_POINTERS)
     @Tag(Type.SIN)
     @Tag(Type.MATH)
+    @Complexity(time = "O(n)", space = "O(1)")
     public ListNode detectCycle(ListNode head) {
         ListNode fast = head;
         ListNode slow = head;

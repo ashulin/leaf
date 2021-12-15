@@ -23,5 +23,7 @@ public enum SourceType {
     /** leetcode. */
     LEET_CODE,
     /** 剑指offer. */
-    OFFER;
+    OFFER,
+    /** 程序员面试金典 6th. */
+    CI6;
 }

@@ -24,12 +24,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /** 标记算法题来源. */
 @Documented
 @Retention(CLASS)
-@Target({METHOD})
+@Target({METHOD, TYPE})
 @Repeatable(Sources.class)
 public @interface Source {
     SourceType type() default SourceType.LEET_CODE;

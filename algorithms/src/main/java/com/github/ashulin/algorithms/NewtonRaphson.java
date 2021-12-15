@@ -2,6 +2,8 @@ package com.github.ashulin.algorithms;
 
 import com.github.ashulin.algorithms.doc.Complexity;
 import com.github.ashulin.algorithms.doc.Source;
+import com.github.ashulin.algorithms.doc.Tag;
+import com.github.ashulin.algorithms.doc.Type;
 
 /**
  * @author Li Zongwen
@@ -21,6 +23,7 @@ public class NewtonRaphson {
      * @since 2021/12/13
      */
     @Source(69)
+    @Tag(Type.MATH)
     public int sqrt(int x) {
         long xi = x;
         while (xi * xi > x) {

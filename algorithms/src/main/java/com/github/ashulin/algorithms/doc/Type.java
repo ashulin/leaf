@@ -24,10 +24,14 @@ public enum Type {
     TWO_POINTERS,
     SLIDING_WINDOW,
     HASH_MAP,
+    RECURSIVE,
     ARRAY,
     STRING,
     MATRIX,
+    LINKED_LIST,
     /** 模拟. */
     SIM,
-    MATH
+    MATH,
+    /** 无知也是一种罪! */
+    SIN;
 }

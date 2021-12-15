@@ -182,6 +182,43 @@ public class LinkedList {
         return top;
     }
 
+    /**
+     * 给定一个链表，返回链表开始入环的第一个节点。如果链表无环，则返回null。
+     *
+     * <p>如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0
+     * 开始）。如果 pos 是 -1，则在该链表中没有环。 注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。 不允许修改链表!
+     */
+    @Source(142)
+    @Tag(Type.TWO_POINTERS)
+    @Tag(Type.SIN)
+    @Tag(Type.MATH)
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        // 存在null即不存在环
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                // 设从头结点到环形入口节点的节点数为x；
+                // 设环的节点数为L；
+                // 环形入口节点到fast指针与slow指针相遇节点的节点数为y (y <= L-1)：
+                //      当slow步入环时，最差的情况，fast在slow前面一位，fast相对于slow为1次接近1步（步速差）
+                //      在最差情况下，slow前进L-1步后与fast相遇；
+                // 从相遇节点再到环形入口节点的节点数为z (z = L - y)；
+                // 可得 slow: (x + y) * 2 = fast: x + n*(y + z) + y, n为fast在环中移动的圈数，易得 n >= 1;
+                // => x = n*(y + z) - y = (n - 1)*(y + z) + z = (n - 1) * L + z
+                // 以上可得，在相遇后，再从头结点以1的步长出发 即可与slow指针在环形入口相遇；
+                ListNode newSlow = head;
+                while (slow != newSlow) {
+                    slow = slow.next;
+                    newSlow = newSlow.next;
+                }
+                return slow;
+            }
+        }
+        return null;
+    }
 
     /** 设计链表的实现。您可以选择使用单链表或双链表。 */
     @Source(707)

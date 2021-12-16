@@ -69,4 +69,19 @@ public class HashMapTest {
                 new int[] {9, 4},
                 solution.intersection(new int[] {4, 9, 5}, new int[] {9, 4, 9, 8, 4}));
     }
+
+    @Test
+    public void testIntersect() {
+        Assertions.assertArrayEquals(
+                new int[] {2, 2}, solution.intersect(new int[] {1, 2, 2, 1}, new int[] {2, 2}));
+        Assertions.assertArrayEquals(
+                new int[] {9, 4},
+                solution.intersect(new int[] {4, 9, 5}, new int[] {9, 4, 9, 8, 4}));
+    }
+
+    @Test
+    public void testIsHappy() {
+        Assertions.assertTrue(solution.isHappy(19));
+        Assertions.assertFalse(solution.isHappy(2));
+    }
 }

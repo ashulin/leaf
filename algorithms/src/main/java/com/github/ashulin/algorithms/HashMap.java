@@ -150,6 +150,8 @@ public class HashMap {
         return result;
     }
 
+    @Source(349)
+    @Complexity(time = "O(m+n)", space = "O(m)")
     @Tag(Type.ARRAY)
     public int[] intersection(int[] nums1, int[] nums2) {
         Set<Integer> hash = new HashSet<>();
@@ -163,5 +165,104 @@ public class HashMap {
             }
         }
         return result.stream().mapToInt(i -> i).toArray();
+    }
+
+    /**
+     * 给你两个整数数组nums1 和 nums2
+     * ，请你以数组形式返回两数组的交集。返回结果中每个元素出现的次数，应与元素在两个数组中都出现的次数一致（如果出现次数不一致，则考虑取较小值）。可以不考虑输出结果的顺序。
+     */
+    @Source(350)
+    @Complexity(time = "O(m+n)", space = "O(min(n, m))")
+    @Tag(Type.ARRAY)
+    public int[] intersect(int[] nums1, int[] nums2) {
+        int[] less = nums1;
+        int[] more = nums2;
+        if (less.length > more.length) {
+            less = nums2;
+            more = nums1;
+        }
+        Map<Integer, Integer> hash = new java.util.HashMap<>(less.length);
+        for (int i : less) {
+            hash.compute(i, (key, value) -> value == null ? 1 : ++value);
+        }
+        List<Integer> result = new ArrayList<>(less.length);
+        for (int i : more) {
+            hash.compute(
+                    i,
+                    (key, value) -> {
+                        if (value == null) {
+                            return null;
+                        }
+                        if (value > 0) {
+                            result.add(key);
+                        }
+                        return --value;
+                    });
+        }
+        return result.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    /**
+     * 编写一个算法来判断一个数 n 是不是快乐数。
+     *
+     * <p>「快乐数」定义为：
+     *
+     * <p>对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和。 然后重复这个过程直到这个数变为 1，也可能是 无限循环 但始终变不到 1。 如果 可以变为
+     * 1，那么这个数就是快乐数。 如果 n 是快乐数就返回 true ；不是，则返回 false 。
+     */
+    @Source(202)
+    @Complexity(time = "O(logn)", space = "O(logn)")
+    public boolean isHappy(int n) {
+        Set<Integer> hash = new HashSet<>();
+        int cur = n;
+        while (!hash.contains(cur)) {
+            hash.add(cur);
+            int sum = getNext(cur);
+            if (sum == 1) {
+                return true;
+            }
+            cur = sum;
+        }
+        return false;
+    }
+
+    public int getNext(int n) {
+        int sum = 0;
+        while (n > 0) {
+            int d = n % 10;
+            n = n / 10;
+            sum += d * d;
+        }
+        return sum;
+    }
+
+    /**
+     * 9 -> 81.
+     *
+     * <p>99 -> 162.
+     *
+     * <p>999 -> 243.
+     *
+     * <p>9,999 -> 324.
+     *
+     * <p>9,999,999,999,999 -> 1,053.
+     *
+     * <p>收敛在243及以内，由于一定会形成环形链表，快乐数时快慢指针一定在 数1 相遇；
+     */
+    @Source(202)
+    @Complexity(time = "O(n)", space = "O(1)")
+    @Tag(Type.TWO_POINTERS)
+    @Tag(Type.SIN)
+    @Tag(Type.MATH)
+    public boolean isHappy2(int n) {
+        int slow = n;
+        int fast = n;
+        do {
+            slow = getNext(slow);
+            fast = getNext(fast);
+            fast = getNext(fast);
+        } while (slow != fast);
+
+        return fast == 1;
     }
 }

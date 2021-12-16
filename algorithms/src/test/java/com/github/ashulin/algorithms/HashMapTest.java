@@ -60,4 +60,13 @@ public class HashMapTest {
                 Arrays.stream(new Integer[] {0, 1, 2}).collect(Collectors.toList()),
                 solution.findAnagrams("abab", "ab"));
     }
+
+    @Test
+    public void testIntersection() {
+        Assertions.assertArrayEquals(
+                new int[] {2}, solution.intersection(new int[] {1, 2, 2, 1}, new int[] {2, 2}));
+        Assertions.assertArrayEquals(
+                new int[] {9, 4},
+                solution.intersection(new int[] {4, 9, 5}, new int[] {9, 4, 9, 8, 4}));
+    }
 }

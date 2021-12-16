@@ -24,8 +24,10 @@ import com.github.ashulin.algorithms.doc.Tag;
 import com.github.ashulin.algorithms.doc.Type;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Tag(Type.HASH_MAP)
 public class HashMap {
@@ -146,5 +148,20 @@ public class HashMap {
             }
         }
         return result;
+    }
+
+    @Tag(Type.ARRAY)
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> hash = new HashSet<>();
+        List<Integer> result = new ArrayList<>(Math.min(nums1.length, nums2.length));
+        for (int i : nums1) {
+            hash.add(i);
+        }
+        for (int i : nums2) {
+            if (hash.remove(i)) {
+                result.add(i);
+            }
+        }
+        return result.stream().mapToInt(i -> i).toArray();
     }
 }

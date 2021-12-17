@@ -84,4 +84,11 @@ public class HashMapTest {
         Assertions.assertTrue(solution.isHappy(19));
         Assertions.assertFalse(solution.isHappy(2));
     }
+
+    @Test
+    public void testTwoSum() {
+        Assertions.assertArrayEquals(new int[] {0,1}, solution.twoSum(new int[]{2,7,11,15},9));
+        Assertions.assertArrayEquals(new int[] {1,2}, solution.twoSum(new int[]{3,2,4},6));
+        Assertions.assertArrayEquals(new int[] {0,1}, solution.twoSum(new int[]{3,3},6));
+    }
 }

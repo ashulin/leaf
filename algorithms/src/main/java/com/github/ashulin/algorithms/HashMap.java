@@ -24,6 +24,8 @@ import com.github.ashulin.algorithms.doc.Tag;
 import com.github.ashulin.algorithms.doc.Type;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -269,9 +271,9 @@ public class HashMap {
     /**
      * 给定一个整数数组 nums和一个整数目标值 target，请你在该数组中找出 和为目标值 target 的那两个整数，并返回它们的数组下标。
      *
-     * 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。
+     * <p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。
      *
-     * 你可以按任意顺序返回答案。
+     * <p>你可以按任意顺序返回答案。
      */
     @Source(1)
     @Complexity(time = "O(n)", space = "O(n)")
@@ -280,11 +282,126 @@ public class HashMap {
         for (int i = 0; i < nums.length; i++) {
             int r = target - nums[i];
             Integer index = hash.get(r);
-            if (index != null ) {
+            if (index != null) {
                 return new int[] {index, i};
             }
             hash.put(nums[i], i);
         }
         return new int[] {};
+    }
+
+    /**
+     * 给定四个包含整数的数组列表 A , B , C , D ,计算有多少个元组 (i, j, k, l) ，使得 A[i] + B[j] + C[k] + D[l] = 0。
+     *
+     * <p>为了使问题简单化，所有的 A, B, C, D 具有相同的长度 N，且 0 ≤ N ≤ 500 。所有整数的范围在 -2^28 到 2^28 - 1 之间，最终结果不会超过
+     * 2^31 - 1 。
+     */
+    @Source(454)
+    @Complexity(time = "O(n^2)", space = "O(n^2)")
+    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        Map<Integer, Integer> hash = new java.util.HashMap<>(nums1.length);
+        for (int i : nums1) {
+            for (int j : nums2) {
+                hash.compute(i + j, (k, v) -> v == null ? 1 : ++v);
+            }
+        }
+
+        int result = 0;
+        for (int i : nums3) {
+            for (int j : nums4) {
+                result += hash.getOrDefault(-i - j, 0);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 给你一个包含 n 个整数的数组nums，判断nums中是否存在三个元素 a，b，c ，使得a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
+     * 答案中不可以包含重复的三元组。
+     */
+    @Source(15)
+    @Tag(Type.SLIDING_WINDOW)
+    public List<List<Integer>> threeSum(int[] nums) {
+        if (nums == null || nums.length < 2) {
+            return Collections.emptyList();
+        }
+        Arrays.sort(nums);
+        List<List<Integer>> result = new ArrayList<>();
+        for (int l = 0; l < nums.length - 2 && nums[l] <= 0; l++) {
+            // 去重
+            if (l > 0 && nums[l] == nums[l - 1]) {
+                continue;
+            }
+            int m = l + 1;
+            int r = nums.length - 1;
+            while (m < r) {
+                int sum = nums[l] + nums[m] + nums[r];
+                if (sum == 0) {
+                    result.add(Arrays.asList(nums[l], nums[m], nums[r]));
+                    // 去重
+                    while (m < r && nums[m] == nums[m + 1]) {
+                        m++;
+                    }
+                    while (m < r && nums[r] == nums[r - 1]) {
+                        r--;
+                    }
+                    m++;
+                    r--;
+                } else if (sum < 0) {
+                    m++;
+                } else {
+                    r--;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 给你一个由 n 个整数组成的数组nums ，和一个目标值 target 。请你找出并返回满足下述全部条件且不重复的四元组[nums[a], nums[b], nums[c],
+     * nums[d]]（若两个四元组元素一一对应，则认为两个四元组重复）：
+     *
+     * <p>0 <= a, b, c, d < n a、b、c 和 d 互不相同 nums[a] + nums[b] + nums[c] + nums[d] == target 你可以按
+     * 任意顺序 返回答案 。
+     */
+    @Source(18)
+    @Tag(Type.SLIDING_WINDOW)
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        if (nums == null || nums.length < 4) {
+            return Collections.emptyList();
+        }
+        Arrays.sort(nums);
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < nums.length - 3; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            for (int j = i + 1; j < nums.length - 2; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) {
+                    continue;
+                }
+                int l = j + 1;
+                int r = nums.length - 1;
+                while (l < r) {
+                    int sum = nums[i] + nums[j] + nums[l] + nums[r];
+                    if (sum == target) {
+                        result.add(Arrays.asList(nums[i], nums[j], nums[l], nums[r]));
+                        while (l < r && nums[l] == nums[l + 1]) {
+                            l++;
+                        }
+                        while (l < r && nums[r] == nums[r - 1]) {
+                            r--;
+                        }
+                        l++;
+                        r--;
+                    } else if (sum > target) {
+                        r--;
+                    } else {
+                        l++;
+                    }
+                }
+            }
+        }
+        return result;
     }
 }

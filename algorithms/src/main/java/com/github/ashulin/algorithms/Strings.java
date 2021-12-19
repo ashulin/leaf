@@ -74,7 +74,7 @@ public class Strings {
         return new String(chars);
     }
 
-    /** 请实现一个函数，把字符串 s 中的每个空格替换成"%20" */
+    /** 请实现一个函数，把字符串 s 中的每个空格替换成"%20"。 */
     @Source(value = 05, type = SourceType.OFFER)
     @Tag(Type.TWO_POINTERS)
     public String replaceSpace(String s) {
@@ -151,7 +151,7 @@ public class Strings {
         return new String(container, startIndex, container.length - startIndex);
     }
 
-    /** 不使用新的空间 */
+    /** 不使用新的空间。 */
     @Source(151)
     @Tag(Type.TWO_POINTERS)
     public String reverseWords(char[] chars) {
@@ -223,7 +223,7 @@ public class Strings {
         return new String(result);
     }
 
-    /** 不使用新的空间 */
+    /** 不使用新的空间。 */
     @Source(value = 58, type = SourceType.OFFER)
     @Tag(Type.TWO_POINTERS)
     public String reverseLeftWords(char[] chars, int n) {

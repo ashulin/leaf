@@ -21,7 +21,7 @@ package com.github.ashulin.algorithms;
 import com.github.ashulin.algorithms.doc.Complexity;
 import com.github.ashulin.algorithms.doc.Source;
 
-/** Knuth-Morris-Pratt 字符串查找算法 */
+/** Knuth-Morris-Pratt 字符串查找算法. */
 @Complexity(time = "O(n)", space = "O(n)")
 public class KMP {
     /**
@@ -64,7 +64,7 @@ public class KMP {
     }
 
     /**
-     * 前缀是指不包含最后一个字符的所有以第一个字符开头的连续子串； 后缀是指不包含第一个字符的所有以最后一个字符结尾的连续子串
+     * 前缀是指不包含最后一个字符的所有以第一个字符开头的连续子串； 后缀是指不包含第一个字符的所有以最后一个字符结尾的连续子串。
      *
      * <table border="3">
      *   <tr>

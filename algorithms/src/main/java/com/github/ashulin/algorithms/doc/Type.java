@@ -25,10 +25,12 @@ public enum Type {
     SLIDING_WINDOW,
     HASH_MAP,
     RECURSIVE,
+    ITERATION,
     ARRAY,
     STRING,
     MATRIX,
     LINKED_LIST,
+    BINARY_TREE,
     /** 模拟. */
     SIM,
     MATH,

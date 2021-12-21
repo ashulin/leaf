@@ -35,4 +35,13 @@ public class StackAndQueueTest {
                             "10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"
                         }));
     }
+
+    @Test
+    public void testMaxSlidingWindow() {
+        Assertions.assertArrayEquals(
+                new int[] {3, 3, 5, 5, 6, 7},
+                solution.maxSlidingWindow(new int[] {1, 3, -1, -3, 5, 3, 6, 7}, 3));
+        Assertions.assertArrayEquals(
+                new int[] {4}, solution.maxSlidingWindow(new int[] {4, -2}, 2));
+    }
 }

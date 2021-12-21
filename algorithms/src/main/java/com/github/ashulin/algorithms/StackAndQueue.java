@@ -23,6 +23,8 @@ import com.github.ashulin.algorithms.doc.Source;
 import com.github.ashulin.algorithms.doc.Tag;
 import com.github.ashulin.algorithms.doc.Type;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -189,5 +191,38 @@ public class StackAndQueue {
             }
         }
         return stack.pop();
+    }
+
+    /**
+     * 给你一个整数数组 nums，有一个大小为k的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k个数字。滑动窗口每次只向右移动一位。
+     *
+     * <p>返回滑动窗口中的最大值。
+     */
+    @Source(239)
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums == null || nums.length < 2) {
+            return nums;
+        }
+        // 队首为最大值的下标
+        Deque<Integer> deque = new LinkedList<>();
+        int[] result = new int[nums.length - k + 1];
+        for (int i = 0; i < nums.length; ++i) {
+            // 保证单调递增
+            while (!deque.isEmpty() && nums[i] >= nums[deque.peekLast()]) {
+                deque.pollLast();
+            }
+            // 添加当前数值的下标
+            deque.offerLast(i);
+
+            // 弹出不属于窗口的元素
+            while (deque.peekFirst() <= i - k) {
+                deque.pollFirst();
+            }
+            // 保存窗口的最大值
+            if (i + 1 >= k) {
+                result[i - k + 1] = nums[deque.peekFirst()];
+            }
+        }
+        return result;
     }
 }

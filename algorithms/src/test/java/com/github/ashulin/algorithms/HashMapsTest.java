@@ -25,8 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HashMapTest {
-    private final HashMap solution = new HashMap();
+public class HashMapsTest {
+    private final HashMaps solution = new HashMaps();
 
     @Test
     public void testIsAnagram() {

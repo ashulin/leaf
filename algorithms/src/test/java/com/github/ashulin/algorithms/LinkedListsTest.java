@@ -1,6 +1,6 @@
 package com.github.ashulin.algorithms;
 
-import com.github.ashulin.algorithms.LinkedList.ListNode;
+import com.github.ashulin.algorithms.LinkedLists.ListNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
  * @author Li Zongwen
  * @since 2021/12/15
  */
-public class LinkedListTest {
-    LinkedList solution = new LinkedList();
+public class LinkedListsTest {
+    LinkedLists solution = new LinkedLists();
     ListNode listNode;
 
     @BeforeEach
@@ -48,7 +48,7 @@ public class LinkedListTest {
 
     @Test
     public void testMyLinkedList() {
-        LinkedList.MyLinkedList list = new LinkedList.MyLinkedList();
+        LinkedLists.MyLinkedList list = new LinkedLists.MyLinkedList();
         list.addAtHead(1);
         list.addAtTail(3);
         list.addAtIndex(1, 2);

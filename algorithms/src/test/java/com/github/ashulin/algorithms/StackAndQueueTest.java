@@ -44,4 +44,33 @@ public class StackAndQueueTest {
         Assertions.assertArrayEquals(
                 new int[] {4}, solution.maxSlidingWindow(new int[] {4, -2}, 2));
     }
+
+    @Test
+    public void testTopKFrequent() {
+        Assertions.assertArrayEquals(
+                new int[] {1, 2}, solution.topKFrequent(new int[] {1, 1, 1, 2, 2, 3}, 2));
+        Assertions.assertArrayEquals(new int[] {2}, solution.topKFrequent(new int[] {1, 2, 2}, 1));
+    }
+
+    @Test
+    public void testSimplifyPath() {
+        Assertions.assertEquals("/c", solution.simplifyPath("/a/./b/../../c/"));
+        Assertions.assertEquals("/", solution.simplifyPath("/../"));
+        Assertions.assertEquals("/...", solution.simplifyPath("/.../"));
+        Assertions.assertEquals("/home", solution.simplifyPath("/home/"));
+        Assertions.assertEquals("/home/foo", solution.simplifyPath("/home//foo/"));
+        Assertions.assertEquals("/a/b/c", solution.simplifyPath("/a//b////c/d//././/.."));
+        Assertions.assertEquals("/c", solution.simplifyPath("/a/../../b/../c//.//"));
+        Assertions.assertEquals("/..hidden", solution.simplifyPath("/..hidden"));
+        Assertions.assertEquals("/hello../world", solution.simplifyPath("/hello../world"));
+        Assertions.assertEquals("/c", solution.simplifyPath2("/a/./b/../../c/"));
+        Assertions.assertEquals("/", solution.simplifyPath2("/../"));
+        Assertions.assertEquals("/...", solution.simplifyPath2("/.../"));
+        Assertions.assertEquals("/home", solution.simplifyPath2("/home/"));
+        Assertions.assertEquals("/home/foo", solution.simplifyPath2("/home//foo/"));
+        Assertions.assertEquals("/a/b/c", solution.simplifyPath2("/a//b////c/d//././/.."));
+        Assertions.assertEquals("/c", solution.simplifyPath2("/a/../../b/../c//.//"));
+        Assertions.assertEquals("/..hidden", solution.simplifyPath2("/..hidden"));
+        Assertions.assertEquals("/hello../world", solution.simplifyPath2("/hello../world"));
+    }
 }

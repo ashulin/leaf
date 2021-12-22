@@ -31,7 +31,7 @@ import java.util.Objects;
  * @since 2021/12/15
  */
 @Tag(Type.LINKED_LIST)
-public class LinkedList {
+public class LinkedLists {
 
     public static class ListNode {
         int val;

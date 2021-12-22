@@ -23,8 +23,12 @@ import com.github.ashulin.algorithms.doc.Source;
 import com.github.ashulin.algorithms.doc.Tag;
 import com.github.ashulin.algorithms.doc.Type;
 
+import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -224,5 +228,122 @@ public class StackAndQueue {
             }
         }
         return result;
+    }
+
+    /**
+     * 给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。
+     *
+     * <p>你可以按 任意顺序 返回答案
+     */
+    @Source(347)
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>(nums.length);
+        for (int num : nums) {
+            map.compute(num, (key, value) -> value == null ? 1 : ++value);
+        }
+        // 固定大小为K的小顶堆
+        PriorityQueue<Map.Entry<Integer, Integer>> minHeap =
+                new PriorityQueue<>(Comparator.comparingInt(Map.Entry::getValue));
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            minHeap.offer(entry);
+            if (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+
+        int[] result = new int[k];
+        // 小顶堆倒序遍历
+        for (int i = k - 1; i >= 0; i--) {
+            result[i] = minHeap.poll().getKey();
+        }
+        return result;
+    }
+
+    /**
+     * 给你一个字符串 path ，表示指向某一文件或目录的Unix 风格 绝对路径 （以 '/' 开头），请你将其转化为更加简洁的规范路径。
+     *
+     * <p>在 Unix 风格的文件系统中，一个点（.）表示当前目录本身；此外，两个点
+     * （..）表示将目录切换到上一级（指向父目录）；两者都可以是复杂相对路径的组成部分。任意多个连续的斜杠（即，'//'）都被视为单个斜杠 '/' 。
+     * 对于此问题，任何其他格式的点（例如，'...'）均被视为文件/目录名称。
+     *
+     * <p>请注意，返回的 规范路径 必须遵循下述格式：
+     *
+     * <p>始终以斜杠 '/' 开头。 两个目录名之间必须只有一个斜杠 '/' 。 最后一个目录名（如果存在）不能 以 '/' 结尾。
+     * 此外，路径仅包含从根目录到目标文件或目录的路径上的目录（即，不含 '.' 或 '..'）。 返回简化后得到的 规范路径 。
+     *
+     * <p>path = "/a/./b/../../c/" 输出："/c"
+     */
+    @Source(71)
+    public String simplifyPath(String path) {
+        Stack<Character> stack = new Stack<>();
+        stack.push('/');
+        int pointCount = 0;
+        for (char c : path.toCharArray()) {
+            switch (c) {
+                case '.':
+                    stack.push(c);
+                    pointCount++;
+                    break;
+                case '/':
+                    if (stack.peek() == '/') {
+                        break;
+                    }
+                    if (pointCount == 2) {
+                        backFolder(stack);
+                    } else if (pointCount == 1) {
+                        stack.pop();
+                    } else {
+                        stack.push(c);
+                    }
+                    pointCount = 0;
+                    break;
+                default:
+                    stack.push(c);
+                    pointCount = Integer.MIN_VALUE;
+                    break;
+            }
+        }
+        if (pointCount == 1) {
+            stack.pop();
+        } else if (pointCount == 2) {
+            backFolder(stack);
+        }
+        if (stack.peek() == '/' && stack.size() != 1) {
+            stack.pop();
+        }
+        char[] chars = new char[stack.size()];
+        for (int i = chars.length - 1; i >= 0; i--) {
+            chars[i] = stack.pop();
+        }
+        return new String(chars);
+    }
+
+    public void backFolder(Stack<Character> stack) {
+        int separatorCount = 0;
+        while (!stack.isEmpty() && separatorCount != 2) {
+            if (stack.pop() == '/') {
+                separatorCount++;
+            }
+        }
+        stack.push('/');
+    }
+
+    @Source(71)
+    public String simplifyPath2(String path) {
+        String[] splits = path.split("/");
+        Stack<String> stack = new Stack<>();
+        for (String split : splits) {
+            if ("..".equals(split)) {
+                if (!stack.isEmpty()) {
+                    stack.pop();
+                }
+            } else if (!".".equals(split) && !"".equals(split)) {
+                stack.push(split);
+            }
+        }
+        if (stack.isEmpty()) {
+            return "/";
+        }
+        return "/" + String.join("/", stack);
     }
 }

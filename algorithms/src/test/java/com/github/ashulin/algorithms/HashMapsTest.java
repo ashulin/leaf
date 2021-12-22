@@ -18,12 +18,9 @@
 
 package com.github.ashulin.algorithms;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HashMapsTest {
     private final HashMaps solution = new HashMaps();
@@ -53,12 +50,8 @@ public class HashMapsTest {
 
     @Test
     public void testFindAnagrams() {
-        Assertions.assertEquals(
-                Arrays.stream(new Integer[] {0, 6}).collect(Collectors.toList()),
-                solution.findAnagrams("cbaebabacd", "abc"));
-        Assertions.assertEquals(
-                Arrays.stream(new Integer[] {0, 1, 2}).collect(Collectors.toList()),
-                solution.findAnagrams("abab", "ab"));
+        Assertions.assertArrayEquals(new int[] {0, 6}, solution.findAnagrams("cbaebabacd", "abc"));
+        Assertions.assertArrayEquals(new int[] {0, 1, 2}, solution.findAnagrams("abab", "ab"));
     }
 
     @Test
@@ -106,36 +99,19 @@ public class HashMapsTest {
 
     @Test
     public void testThreeSum() {
-        List<List<Integer>> result = solution.threeSum(new int[] {-1, 0, 1, 2, -1, -4});
-        Assertions.assertEquals(2, result.size());
         Assertions.assertArrayEquals(
-                new int[] {-1, -1, 2},
-                result.get(0).stream().mapToInt(Integer::intValue).toArray());
+                new int[][] {{-1, -1, 2}, {-1, 0, 1}},
+                solution.threeSum(new int[] {-1, 0, 1, 2, -1, -4}));
         Assertions.assertArrayEquals(
-                new int[] {-1, 0, 1}, result.get(1).stream().mapToInt(Integer::intValue).toArray());
-        result = solution.threeSum(new int[] {0, 0, 0, 0, 0, 0});
-        Assertions.assertEquals(1, result.size());
-        Assertions.assertArrayEquals(
-                new int[] {0, 0, 0}, result.get(0).stream().mapToInt(Integer::intValue).toArray());
+                new int[][] {{0, 0, 0}}, solution.threeSum(new int[] {0, 0, 0, 0, 0, 0}));
     }
 
     @Test
     public void testFourSum() {
-        List<List<Integer>> result = solution.fourSum(new int[] {1, 0, -1, 0, -2, 2}, 0);
-        Assertions.assertEquals(3, result.size());
         Assertions.assertArrayEquals(
-                new int[] {-2, -1, 1, 2},
-                result.get(0).stream().mapToInt(Integer::intValue).toArray());
+                new int[][] {{-2, -1, 1, 2}, {-2, 0, 0, 2}, {-1, 0, 0, 1}},
+                solution.fourSum(new int[] {1, 0, -1, 0, -2, 2}, 0));
         Assertions.assertArrayEquals(
-                new int[] {-2, 0, 0, 2},
-                result.get(1).stream().mapToInt(Integer::intValue).toArray());
-        Assertions.assertArrayEquals(
-                new int[] {-1, 0, 0, 1},
-                result.get(2).stream().mapToInt(Integer::intValue).toArray());
-        result = solution.fourSum(new int[] {2, 2, 2, 2, 2, 2}, 8);
-        Assertions.assertEquals(1, result.size());
-        Assertions.assertArrayEquals(
-                new int[] {2, 2, 2, 2},
-                result.get(0).stream().mapToInt(Integer::intValue).toArray());
+                new int[][] {{2, 2, 2, 2}}, solution.fourSum(new int[] {2, 2, 2, 2, 2, 2}, 8));
     }
 }

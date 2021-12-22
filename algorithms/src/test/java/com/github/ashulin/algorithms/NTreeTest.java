@@ -18,12 +18,10 @@
 
 package com.github.ashulin.algorithms;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class NTreeTest {
     private final NTree solution = new NTree();
@@ -44,22 +42,8 @@ public class NTreeTest {
 
     @Test
     public void testLevelOrder() {
-        List<List<Integer>> result = solution.levelOrder(node);
-        Assertions.assertEquals(3, result.size());
-        Assertions.assertArrayEquals(
-                new int[] {1}, result.get(0).stream().mapToInt(Integer::intValue).toArray());
-        Assertions.assertArrayEquals(
-                new int[] {3, 2, 4}, result.get(1).stream().mapToInt(Integer::intValue).toArray());
-        Assertions.assertArrayEquals(
-                new int[] {5, 6}, result.get(2).stream().mapToInt(Integer::intValue).toArray());
-
-        result = solution.levelOrder2(node);
-        Assertions.assertEquals(3, result.size());
-        Assertions.assertArrayEquals(
-                new int[] {1}, result.get(0).stream().mapToInt(Integer::intValue).toArray());
-        Assertions.assertArrayEquals(
-                new int[] {3, 2, 4}, result.get(1).stream().mapToInt(Integer::intValue).toArray());
-        Assertions.assertArrayEquals(
-                new int[] {5, 6}, result.get(2).stream().mapToInt(Integer::intValue).toArray());
+        int[][] expected = new int[][] {{1}, {3, 2, 4}, {5, 6}};
+        Assertions.assertArrayEquals(expected, solution.levelOrder(node));
+        Assertions.assertArrayEquals(expected, solution.levelOrder2(node));
     }
 }

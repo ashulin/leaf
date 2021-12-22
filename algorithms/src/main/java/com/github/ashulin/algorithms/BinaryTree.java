@@ -93,7 +93,7 @@ public class BinaryTree {
     }
 
     @Source(94)
-    @Complexity(time = "O(2n)", space = "O(1)")
+    @Complexity(time = "O(n)", space = "O(1)")
     public List<Integer> inorderTraversal3(TreeNode root) {
         List<Integer> ans = new ArrayList<>();
         TreeNode cur = root;
@@ -165,7 +165,7 @@ public class BinaryTree {
     }
 
     @Source(144)
-    @Complexity(time = "O(2n)", space = "O(1)")
+    @Complexity(time = "O(n)", space = "O(1)")
     public List<Integer> preorderTraversal3(TreeNode root) {
         List<Integer> ans = new ArrayList<>();
         TreeNode cur = root;
@@ -603,6 +603,123 @@ public class BinaryTree {
         }
         connect3(root.right);
         connect3(root.left);
+        return root;
+    }
+
+    @Source(116)
+    @Tag(Type.ITERATION)
+    @Complexity(time = "O(n)", space = "O(1)")
+    public Node connect4(Node root) {
+        if (root == null) {
+            return root;
+        }
+        Node left = root;
+        // 只有一层或最后一层时不需要处理
+        while (left.left != null) {
+            Node cur = left;
+            // 层级处理
+            while (cur != null) {
+                cur.left.next = cur.right;
+                // == null时即已到最右
+                if (cur.next != null) {
+                    cur.right.next = cur.next.left;
+                }
+                // 当前层级向右处理
+                cur = cur.next;
+            }
+            // 处理下一层级
+            left = left.left;
+        }
+        return root;
+    }
+
+    /**
+     * 给定一个普通二叉树，填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
+     *
+     * <p>初始状态下，所有next 指针都被设置为 NULL。
+     *
+     * <p>进阶：
+     *
+     * <p>你只能使用常量级额外空间。 使用递归解题也符合要求，本题中递归程序占用的栈空间不算做额外的空间复杂度。
+     */
+    @Source(117)
+    @Tag(Type.ITERATION)
+    @Complexity(time = "O(n)", space = "O(1)")
+    public Node connect5(Node root) {
+        Node mostLeft = root;
+        // 建立虚拟头部，不确定每层的最左节点（头节点）时方便处理，其next即为该层最左
+        Node dummyHead = new Node(0);
+        // 找不到新的层级时退出
+        while (mostLeft != null) {
+            // 每层由左至右处理
+            Node cur = mostLeft;
+            // 标记下一层中等待连接的节点
+            Node pending = dummyHead;
+            // 最右时开始下一层
+            while (cur != null) {
+                // 连接
+                if (cur.left != null) {
+                    pending.next = cur.left;
+                    pending = cur.left;
+                }
+                if (cur.right != null) {
+                    pending.next = cur.right;
+                    pending = cur.right;
+                }
+                // 向右遍历
+                cur = cur.next;
+            }
+            mostLeft = dummyHead.next;
+            dummyHead.next = null;
+        }
+        return root;
+    }
+
+    /**
+     * 给定一个二叉树，找出其最大深度。
+     *
+     * <p>二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+     */
+    @Source(104)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(h)")
+    public int maxDepth(TreeNode root) {
+        return root == null ? 0 : Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+
+    /**
+     * 给定一个二叉树，找出其最小深度。
+     *
+     * <p>最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+     */
+    @Source(111)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(h)")
+    public int minDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
+        return (left == 0 || right == 0)
+                // 如果左子树或右子树的深度不为 0，即存在一个子树，那么当前子树的最小深度就是该子树的深度+1
+                ? left + right + 1
+                // 如果左子树和右子树的深度都不为 0，即左右子树都存在，那么当前子树的最小深度就是它们较小值+1
+                : Math.min(left, right) + 1;
+    }
+
+    /** 翻转一棵二叉树。 */
+    @Source(226)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(h)")
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return root;
+        }
+        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree(root.right);
+        root.right = left;
+        root.left = right;
         return root;
     }
 }

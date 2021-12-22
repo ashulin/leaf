@@ -4,10 +4,14 @@ import com.github.ashulin.algorithms.doc.Complexity;
 import com.github.ashulin.algorithms.doc.Source;
 import com.github.ashulin.algorithms.doc.Tag;
 import com.github.ashulin.algorithms.doc.Type;
+import org.w3c.dom.Node;
 
 import javax.swing.tree.TreeNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -28,6 +32,26 @@ public class BinaryTree {
             this.val = val;
             this.left = left;
             this.right = right;
+        }
+    }
+
+    public static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node next;
+
+        public Node() {}
+
+        public Node(int val) {
+            this.val = val;
+        }
+
+        public Node(int val, Node left, Node right, Node next) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+            this.next = next;
         }
     }
 
@@ -267,5 +291,318 @@ public class BinaryTree {
             left++;
             right--;
         }
+    }
+
+    /** 给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。 */
+    @Source(102)
+    @Tag(Type.ITERATION)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Deque<TreeNode> deque = new LinkedList<>();
+        if (root == null) {
+            return Collections.emptyList();
+        }
+        deque.offer(root);
+        List<List<Integer>> ans = new ArrayList<>();
+        while (!deque.isEmpty()) {
+            List<Integer> level = new ArrayList<>();
+            for (int size = deque.size(); size > 0; size--) {
+                TreeNode node = deque.pop();
+                level.add(node.val);
+                if (node.left != null) {
+                    deque.offer(node.left);
+                }
+                if (node.right != null) {
+                    deque.offer(node.right);
+                }
+            }
+            ans.add(level);
+        }
+        return ans;
+    }
+
+    @Source(102)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public List<List<Integer>> levelOrder2(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+        bfs(root, 1, ans);
+        return ans;
+    }
+
+    public void bfs(TreeNode root, int deep, List<List<Integer>> result) {
+        if (root == null) {
+            return;
+        }
+        if (result.size() < deep) {
+            List<Integer> level = new ArrayList<>();
+            result.add(level);
+        }
+        result.get(deep - 1).add(root.val);
+        deep++;
+        bfs(root.left, deep, result);
+        bfs(root.right, deep, result);
+    }
+
+    /** 给定一个二叉树，返回其节点值自底向上的层序遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）. */
+    @Source(107)
+    @Tag(Type.ITERATION)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        Deque<TreeNode> deque = new LinkedList<>();
+        if (root == null) {
+            return Collections.emptyList();
+        }
+        deque.offer(root);
+        List<List<Integer>> ans = new ArrayList<>();
+        while (!deque.isEmpty()) {
+            List<Integer> level = new ArrayList<>();
+            for (int size = deque.size(); size > 0; size--) {
+                TreeNode node = deque.pop();
+                level.add(node.val);
+                if (node.left != null) {
+                    deque.offer(node.left);
+                }
+                if (node.right != null) {
+                    deque.offer(node.right);
+                }
+            }
+            ans.add(0, level);
+        }
+        return ans;
+    }
+
+    @Source(107)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public List<List<Integer>> levelOrderBottom2(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+        bfs2(root, 1, ans);
+        return ans;
+    }
+
+    public void bfs2(TreeNode root, int deep, List<List<Integer>> result) {
+        if (root == null) {
+            return;
+        }
+        if (result.size() < deep) {
+            List<Integer> level = new ArrayList<>();
+            result.add(0, level);
+        }
+        result.get(result.size() - deep).add(root.val);
+        deep++;
+        bfs2(root.left, deep, result);
+        bfs2(root.right, deep, result);
+    }
+
+    /** 给定一个二叉树的 根节点 root，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。 */
+    @Source(199)
+    @Tag(Type.ITERATION)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public List<Integer> rightSideView(TreeNode root) {
+        if (root == null) {
+            return Collections.emptyList();
+        }
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offer(root);
+        List<Integer> ans = new ArrayList<>();
+        while (!deque.isEmpty()) {
+            int size = deque.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = deque.pop();
+                if (i == 0) {
+                    ans.add(node.val);
+                }
+                if (node.right != null) {
+                    deque.offer(node.right);
+                }
+                if (node.left != null) {
+                    deque.offer(node.left);
+                }
+            }
+        }
+        return ans;
+    }
+
+    @Source(199)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public List<Integer> rightSideView2(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        rightSideView(root, 1, list);
+        return list;
+    }
+
+    public void rightSideView(TreeNode root, int deep, List<Integer> result) {
+        if (root == null) {
+            return;
+        }
+        if (result.size() < deep) {
+            result.add(root.val);
+        }
+        deep++;
+        rightSideView(root.right, deep, result);
+        rightSideView(root.left, deep, result);
+    }
+
+    /** 给定一个非空二叉树, 返回一个由每层节点平均值组成的数组。 */
+    @Source(637)
+    @Tag(Type.ITERATION)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public List<Double> averageOfLevels(TreeNode root) {
+        if (root == null) {
+            return Collections.emptyList();
+        }
+
+        Deque<TreeNode> deque = new LinkedList<>();
+        List<Double> ans = new ArrayList<>();
+        deque.offer(root);
+        while (!deque.isEmpty()) {
+            double sum = 0;
+            int size = deque.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = deque.pop();
+                sum += node.val;
+                if (node.left != null) {
+                    deque.offer(node.left);
+                }
+                if (node.right != null) {
+                    deque.offer(node.right);
+                }
+            }
+            ans.add(sum / size);
+        }
+        return ans;
+    }
+
+    @Source(515)
+    @Tag(Type.ITERATION)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public List<Integer> largestValues(TreeNode root) {
+        if (root == null) {
+            return Collections.emptyList();
+        }
+        List<Integer> ans = new ArrayList<>();
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offer(root);
+        while (!deque.isEmpty()) {
+            int max = Integer.MIN_VALUE;
+            for (int i = deque.size(); i > 0; --i) {
+                TreeNode node = deque.pop();
+                max = Math.max(max, node.val);
+                if (node.left != null) {
+                    deque.offer(node.left);
+                }
+                if (node.right != null) {
+                    deque.offer(node.right);
+                }
+            }
+            ans.add(max);
+        }
+        return ans;
+    }
+
+    @Source(515)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public List<Integer> largestValues2(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        largestValues(root, 1, ans);
+        return ans;
+    }
+
+    public void largestValues(TreeNode root, int deep, List<Integer> result) {
+        if (root == null) {
+            return;
+        }
+        if (result.size() < deep) {
+            result.add(root.val);
+        } else if (root.val > result.get(deep - 1)) {
+            result.set(deep - 1, root.val);
+        }
+        deep++;
+        largestValues(root.left, deep, result);
+        largestValues(root.right, deep, result);
+    }
+
+    /**
+     * 给定一个完美二叉树，其所有叶子节点都在同一层，每个父节点都有两个子节点。 填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next
+     * 指针设置为 NULL。
+     *
+     * <p>初始状态下，所有next 指针都被设置为 NULL。
+     */
+    @Source(116)
+    @Tag(Type.ITERATION)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public Node connect(Node root) {
+        if (root == null) {
+            return null;
+        }
+        Deque<Node> deque = new LinkedList<>();
+        deque.offer(root);
+        while (!deque.isEmpty()) {
+            for (int i = deque.size(); i > 0; --i) {
+                Node cur = deque.pop();
+                if (i > 1) {
+                    cur.next = deque.peek();
+                }
+                if (cur.left != null) {
+                    deque.offer(cur.left);
+                }
+                if (cur.right != null) {
+                    deque.offer(cur.right);
+                }
+            }
+        }
+        return root;
+    }
+
+    @Source(116)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public Node connect2(Node root) {
+        connect(root, 1, 0, new Node[(1 << deep(root)) - 1]);
+        return root;
+    }
+
+    private int deep(Node node) {
+        int deep = 0;
+        while (node != null) {
+            deep++;
+            node = node.left;
+        }
+        return deep;
+    }
+
+    /** 由于是完美二叉树可以使用数组做存储. */
+    private void connect(Node cur, int deep, int index, Node[] nodes) {
+        if (cur == null) {
+            return;
+        }
+        int max = (1 << deep) - 1;
+        nodes[index] = cur;
+        if (index < max - 1) {
+            cur.next = nodes[index + 1];
+        }
+        deep++;
+        connect(cur.right, deep, 2 * index + 2, nodes);
+        connect(cur.left, deep, 2 * index + 1, nodes);
+    }
+
+    @Source(116)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(1)")
+    public Node connect3(Node root) {
+        if (root == null || root.right == null) {
+            return root;
+        }
+
+        root.left.next = root.right;
+        if (root.next != null) {
+            root.right.next = root.next.left;
+        }
+        connect3(root.right);
+        connect3(root.left);
+        return root;
     }
 }

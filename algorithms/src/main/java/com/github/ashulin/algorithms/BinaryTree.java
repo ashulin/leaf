@@ -11,9 +11,12 @@ import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Tag(Type.BINARY_TREE)
 public class BinaryTree {
@@ -880,5 +883,297 @@ public class BinaryTree {
             }
         }
         return paths;
+    }
+
+    @Source(257)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(1)")
+    public List<String> binaryTreePaths2(TreeNode root) {
+        Deque<String> paths = new LinkedList<>();
+        List<String> result = new ArrayList<>();
+        dfs(root, paths, result);
+        return result;
+    }
+
+    public void dfs(TreeNode root, Deque<String> paths, List<String> result) {
+        if (root == null) {
+            return;
+        }
+
+        paths.offer(String.valueOf(root.val));
+        dfs(root.left, paths, result);
+        dfs(root.right, paths, result);
+        if (root.left == null && root.right == null) {
+            result.add(String.join("->", paths));
+        }
+        // 回溯
+        paths.pollLast();
+    }
+
+    /**
+     * 给你两棵二叉树的根节点 p 和 q ，编写一个函数来检验这两棵树是否相同。
+     *
+     * <p>如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+     */
+    @Source(100)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(1)")
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        }
+        if ((p == null || q == null) || p.val != q.val) {
+            return false;
+        }
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+
+    /** 计算给定二叉树的所有左叶子之和。 */
+    @Source(404)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(1)")
+    public int sumOfLeftLeaves(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int ans = 0;
+        if (root.left != null && root.left.left == null && root.left.right == null) {
+            ans = root.left.val;
+        }
+        return ans + sumOfLeftLeaves(root.left) + sumOfLeftLeaves(root.right);
+    }
+
+    @Source(513)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(1)")
+    public int findBottomLeftValue(TreeNode root) {
+        int[] ans = new int[] {0, 0};
+        findBottomLeftValue(root, ans, 1);
+        return ans[1];
+    }
+
+    public void findBottomLeftValue(TreeNode root, int[] ans, int depth) {
+        if (root == null) {
+            return;
+        }
+        if (ans[0] < depth) {
+            ans[0] = depth;
+            ans[1] = root.val;
+        }
+        depth++;
+        findBottomLeftValue(root.left, ans, depth);
+        findBottomLeftValue(root.right, ans, depth);
+    }
+
+    /**
+     * 给你二叉树的根节点root 和一个表示目标和的整数targetSum 。判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和targetSum
+     * 。如果存在，返回 true ；否则，返回 false 。
+     */
+    @Source(112)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(h)")
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
+        }
+        targetSum -= root.val;
+        if (root.left == null && root.right == null) {
+            return 0 == targetSum;
+        }
+        return hasPathSum(root.left, targetSum) || hasPathSum(root.right, targetSum);
+    }
+
+    /** 给定一棵树的前序遍历 preorder 与中序遍历 inorder。请构造二叉树并返回其根节点。 */
+    @Source(105)
+    @Tag(Type.SIM)
+    @Tag(Type.RECURSIVE)
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int i = 0;
+        for (int in : inorder) {
+            map.put(in, i++);
+        }
+        return buildTreeByPre(preorder, 0, 0, preorder.length, map);
+    }
+
+    private TreeNode buildTreeByPre(
+            int[] preorder, int inStart, int preStart, final int len, Map<Integer, Integer> map) {
+        if (len < 1) {
+            return null;
+        }
+        int rootNum = preorder[preStart];
+        TreeNode root = new TreeNode(rootNum);
+        if (len == 1) {
+            return root;
+        }
+
+        int index = map.get(rootNum);
+        root.left = buildTreeByPre(preorder, inStart, preStart + 1, index - inStart, map);
+        root.right =
+                buildTreeByPre(
+                        preorder,
+                        index + 1,
+                        preStart + 1 + index - inStart,
+                        len - index + inStart - 1,
+                        map);
+        return root;
+    }
+
+    /**
+     * 根据一棵树的中序遍历与后序遍历构造二叉树。
+     *
+     * <p>注意: 你可以假设树中没有重复的元素。
+     */
+    @Source(106)
+    @Tag(Type.SIM)
+    @Tag(Type.RECURSIVE)
+    public TreeNode buildTree2(int[] inorder, int[] postorder) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int i = 0;
+        for (int in : inorder) {
+            map.put(in, i++);
+        }
+        return buildTreeByPost(postorder, 0, 0, postorder.length, map);
+    }
+
+    private TreeNode buildTreeByPost(
+            int[] postorder, int inStart, int postStart, final int len, Map<Integer, Integer> map) {
+        if (len < 1) {
+            return null;
+        }
+        int rootNum = postorder[postStart + len - 1];
+        TreeNode root = new TreeNode(rootNum);
+        if (len == 1) {
+            return root;
+        }
+        int index = map.get(rootNum);
+
+        root.left = buildTreeByPost(postorder, inStart, postStart, index - inStart, map);
+        root.right =
+                buildTreeByPost(
+                        postorder,
+                        index + 1,
+                        postStart + index - inStart,
+                        inStart + len - 1 - index,
+                        map);
+
+        return root;
+    }
+
+    /**
+     * 给定一个不含重复元素的整数数组 nums 。
+     *
+     * <p>一个以此数组直接递归构建的 最大二叉树 定义如下：
+     *
+     * <p>二叉树的根是数组 nums 中的最大元素。 左子树是通过数组中 最大值左边部分 递归构造出的最大二叉树。 右子树是通过数组中 最大值右边部分 递归构造出的最大二叉树。
+     * 返回有给定数组 nums 构建的 最大二叉树 。
+     */
+    @Source(654)
+    @Tag(Type.SIM)
+    @Tag(Type.RECURSIVE)
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return constructMaximumBinaryTree(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode constructMaximumBinaryTree(int[] nums, int start, int end) {
+        if (start > end) {
+            return null;
+        }
+        int maxIndex = getMaxNumIndex(nums, start, end);
+        TreeNode node = new TreeNode(nums[maxIndex]);
+        node.left = constructMaximumBinaryTree(nums, start, maxIndex - 1);
+        node.right = constructMaximumBinaryTree(nums, maxIndex + 1, end);
+        return node;
+    }
+
+    private int getMaxNumIndex(int[] nums, int start, int end) {
+        int maxNumIndex = start;
+        for (int i = start; i <= end; i++) {
+            if (nums[i] > nums[maxNumIndex]) {
+                maxNumIndex = i;
+            }
+        }
+        return maxNumIndex;
+    }
+
+    /**
+     * 给定两个二叉树，想象当你将它们中的一个覆盖到另一个上时，两个二叉树的一些节点便会重叠。
+     *
+     * <p>你需要将他们合并为一个新的二叉树。合并的规则是如果两个节点重叠，那么将他们的值相加作为节点合并后的新值，否则不为 NULL 的节点将直接作为新二叉树的节点。
+     */
+    @Source(617)
+    @Tag(Type.RECURSIVE)
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        if (root1 == null) {
+            return root2;
+        } else if (root2 == null) {
+            return root1;
+        }
+        root1.val += root2.val;
+        root1.left = mergeTrees(root1.left, root2.left);
+        root1.right = mergeTrees(root1.right, root2.right);
+        return root1;
+    }
+
+    /** 给定二叉搜索树（BST）的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。 返回以该节点为根的子树。 如果节点不存在，则返回 NULL。 */
+    @Source(700)
+    @Tag(Type.RECURSIVE)
+    public TreeNode searchBST(TreeNode root, int val) {
+        if (root == null || root.val == val) {
+            return root;
+        } else if (val < root.val) {
+            return searchBST(root.left, val);
+        } else {
+            return searchBST(root.right, val);
+        }
+    }
+
+    /**
+     * 给你一个二叉树的根节点 root ，判断其是否是一个有效的二叉搜索树。
+     *
+     * <p>有效 二叉搜索树定义如下：
+     *
+     * <p>节点的左子树只包含 小于 当前节点的数。 节点的右子树只包含 大于 当前节点的数。 所有左子树和右子树自身必须也是二叉搜索树。
+     *
+     * <p>即在中序遍历中呈现为递增，即使用中序遍历解答
+     */
+    @Source(98)
+    @Tag(Type.RECURSIVE)
+    public boolean isValidBST(TreeNode root) {
+        return inOrder(root, new AtomicLong(Long.MIN_VALUE));
+    }
+
+    public boolean inOrder(TreeNode root, AtomicLong pre) {
+        if (root == null) {
+            return true;
+        }
+        boolean l = inOrder(root.left, pre);
+        if (pre.get() >= root.val) {
+            return false;
+        } else {
+            pre.set(root.val);
+        }
+        boolean r = inOrder(root.right, pre);
+        return l && r;
+    }
+
+    @Source(98)
+    @Tag(Type.ITERATION)
+    public boolean isValidBST2(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        Long pre = Long.MIN_VALUE;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if (pre >= root.val) {
+                return false;
+            }
+            pre = ((long) root.val);
+            root = root.right;
+        }
+        return true;
     }
 }

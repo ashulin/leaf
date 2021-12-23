@@ -21,6 +21,8 @@ package com.github.ashulin.algorithms;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 public class BinaryTreeTest {
     private final BinaryTree solution = new BinaryTree();
     private BinaryTree.TreeNode root;
@@ -44,6 +46,14 @@ public class BinaryTreeTest {
         Integer[] integers = new Integer[len];
         for (int num : nums) {
             integers[num - 1] = num;
+        }
+        return buildTreeNode(integers, 0);
+    }
+
+    private BinaryTree.TreeNode buildTreeNode(int len) {
+        Integer[] integers = new Integer[len];
+        for (int i = 0; i < len; i++) {
+            integers[i] = i + 1;
         }
         return buildTreeNode(integers, 0);
     }
@@ -262,5 +272,40 @@ public class BinaryTreeTest {
     @Test
     public void testMinDepth() {
         Assertions.assertEquals(4, solution.minDepth(buildTreeNode(new int[] {1, 2, 4, 9}, 15)));
+    }
+
+    @Test
+    public void testIsSymmetric() {
+        BinaryTree.TreeNode node1 =
+                buildTreeNode(new Integer[] {1, 2, 2, null, 3, 3, null, null, null, 4, 5, 5, 4});
+        BinaryTree.TreeNode node2 =
+                buildTreeNode(new Integer[] {1, 2, 2, null, 3, 3, null, null, null, 4, 5, 5, 5});
+        Assertions.assertTrue(solution.isSymmetric(node1));
+        Assertions.assertFalse(solution.isSymmetric(node2));
+        Assertions.assertTrue(solution.isSymmetric2(node1));
+        Assertions.assertFalse(solution.isSymmetric2(node2));
+    }
+
+    @Test
+    public void testCountNodes() {
+        Assertions.assertEquals(7, solution.countNodes(root));
+        Assertions.assertEquals(13, solution.countNodes(buildTreeNode(13)));
+    }
+
+    @Test
+    public void testIsBalanced() {
+        Assertions.assertTrue(solution.isBalanced(root));
+        Assertions.assertTrue(solution.isBalanced(buildTreeNode(13)));
+        Assertions.assertTrue(solution.isBalanced(node));
+        Assertions.assertFalse(
+                solution.isBalanced(buildTreeNode(new int[] {1, 2, 3, 4, 5, 8, 9}, 13)));
+    }
+
+    @Test
+    public void testBinaryTreePaths() {
+        Assertions.assertEquals(
+                Arrays.asList("1->2->4", "1->2->5", "1->3->6", "1->3->7"),
+                solution.binaryTreePaths(root));
+        Assertions.assertEquals(Arrays.asList("1->2->5", "1->3"), solution.binaryTreePaths(node));
     }
 }

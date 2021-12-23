@@ -77,4 +77,28 @@ public class NTree {
             bfs(child, deep, result);
         }
     }
+
+    /**
+     * 给定一个 N 叉树，找到其最大深度。
+     *
+     * <p>最大深度是指从根节点到最远叶子节点的最长路径上的节点总数。
+     *
+     * <p>N 叉树输入按层序遍历序列化表示，每组子节点由空值分隔。
+     */
+    @Source(559)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(h)")
+    public int maxDepth(Node root) {
+        if (root == null) {
+            return 0;
+        }
+        if (root.children == null || root.children.size() == 0) {
+            return 1;
+        }
+        int max = Integer.MIN_VALUE;
+        for (Node child : root.children) {
+            max = Math.max(max, maxDepth(child));
+        }
+        return max + 1;
+    }
 }

@@ -722,4 +722,163 @@ public class BinaryTree {
         root.left = right;
         return root;
     }
+
+    /** 给定一个二叉树，检查它是否是镜像对称的。 */
+    @Source(101)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(h)")
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return isSymmetric(root.left, root.right);
+    }
+
+    protected boolean isSymmetric(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        }
+        if (left != null && right != null && left.val == right.val) {
+            return isSymmetric(left.left, right.right) && isSymmetric(left.right, right.left);
+        } else {
+            return false;
+        }
+    }
+
+    @Source(101)
+    @Tag(Type.ITERATION)
+    @Complexity(time = "O(n)", space = "O(n)")
+    public boolean isSymmetric2(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return isSymmetric2(root.left, root.right);
+    }
+
+    protected boolean isSymmetric2(TreeNode left, TreeNode right) {
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offer(left);
+        deque.offer(right);
+        while (!deque.isEmpty()) {
+            left = deque.pop();
+            right = deque.pop();
+            if (left == null && right == null) {
+                continue;
+            }
+            if ((left == null || right == null) || left.val != right.val) {
+                return false;
+            }
+            deque.offer(left.left);
+            deque.offer(right.right);
+            deque.offer(left.right);
+            deque.offer(right.left);
+        }
+        return true;
+    }
+
+    @Source(222)
+    @Tag(Type.ITERATION)
+    @Complexity(time = "O((logn)^2)", space = "O(1)")
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = leftDepth(root.left);
+        int right = rightDepth(root.right);
+        // 完美二叉树
+        if (left == right) {
+            return (1 << (left + 1)) - 1;
+        }
+        int count = 0;
+        while (root != null) {
+            right = leftDepth(root.right);
+            if (left == right) {
+                // 右子树的最左深度与左子树相同，即最左叶子节点在右子树中，即左子树为完美二叉树
+                // 左子树节点数：(1 << left) - 1 + 根节点
+                count += (1 << left);
+                root = root.right;
+            } else {
+                count += (1 << right);
+                root = root.left;
+            }
+            left--;
+        }
+        return count;
+    }
+
+    private int leftDepth(TreeNode root) {
+        int depth = 0;
+        while (root != null) {
+            depth++;
+            root = root.left;
+        }
+        return depth;
+    }
+
+    private int rightDepth(TreeNode root) {
+        int depth = 0;
+        while (root != null) {
+            depth++;
+            root = root.right;
+        }
+        return depth;
+    }
+
+    /**
+     * 给定一个二叉树，判断它是否是高度平衡的二叉树。
+     *
+     * <p>本题中，一棵高度平衡二叉树定义为：
+     *
+     * <p>一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1 。
+     */
+    @Source(110)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(1)")
+    public boolean isBalanced(TreeNode root) {
+        return depth(root) != -1;
+    }
+
+    private int depth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftDepth = depth(root.left);
+        if (leftDepth == -1) {
+            return -1;
+        }
+        int rightDepth = depth(root.right);
+        if (rightDepth == -1) {
+            return -1;
+        }
+        return Math.abs(leftDepth - rightDepth) > 1 ? -1 : Math.max(leftDepth, rightDepth) + 1;
+    }
+
+    /**
+     * 给你一个二叉树的根节点 root ，按 任意顺序 ，返回所有从根节点到叶子节点的路径。
+     *
+     * <p>叶子节点 是指没有子节点的节点。
+     */
+    @Source(257)
+    @Tag(Type.RECURSIVE)
+    @Complexity(time = "O(n)", space = "O(1)")
+    public List<String> binaryTreePaths(TreeNode root) {
+        if (root == null) {
+            return Collections.emptyList();
+        }
+        if (root.left == null && root.right == null) {
+            return Collections.singletonList(String.valueOf(root.val));
+        }
+        List<String> paths = new ArrayList<>();
+        if (root.left != null) {
+            for (String path : binaryTreePaths(root.left)) {
+                paths.add(root.val + "->" + path);
+            }
+        }
+        if (root.right != null) {
+            for (String path : binaryTreePaths(root.right)) {
+                paths.add(root.val + "->" + path);
+            }
+        }
+        return paths;
+    }
 }

@@ -31,7 +31,7 @@ public class BinaryTreeTest {
     private BinaryTree.TreeNode node;
 
     /** 参考leet-code的数组输入用例转换为二叉树的实现方式。 */
-    private BinaryTree.TreeNode buildTreeNode(Integer[] nums) {
+    private BinaryTree.TreeNode buildTreeNode(Integer... nums) {
         if (nums == null || nums.length == 0) {
             return null;
         }
@@ -84,8 +84,8 @@ public class BinaryTreeTest {
 
     @BeforeEach
     public void before() {
-        root = buildTreeNode(new Integer[] {1, 2, 3, 4, 5, 6, 7});
-        node = buildTreeNode(new Integer[] {1, 2, 3, null, 5});
+        root = buildTreeNode(1, 2, 3, 4, 5, 6, 7);
+        node = buildTreeNode(1, 2, 3, null, 5);
     }
 
     @Test
@@ -295,16 +295,13 @@ public class BinaryTreeTest {
 
     @Test
     public void testMinDepth() {
-        Assertions.assertEquals(
-                4, solution.minDepth(buildTreeNode(new Integer[] {1, 2, null, 4, null, 9})));
+        Assertions.assertEquals(4, solution.minDepth(buildTreeNode(1, 2, null, 4, null, 9)));
     }
 
     @Test
     public void testIsSymmetric() {
-        BinaryTree.TreeNode node1 =
-                buildTreeNode(new Integer[] {1, 2, 2, null, 3, 3, null, 4, 5, 5, 4});
-        BinaryTree.TreeNode node2 =
-                buildTreeNode(new Integer[] {1, 2, 2, null, 3, 3, null, 4, 5, 5, 5});
+        BinaryTree.TreeNode node1 = buildTreeNode(1, 2, 2, null, 3, 3, null, 4, 5, 5, 4);
+        BinaryTree.TreeNode node2 = buildTreeNode(1, 2, 2, null, 3, 3, null, 4, 5, 5, 5);
         Assertions.assertTrue(solution.isSymmetric(node1));
         Assertions.assertFalse(solution.isSymmetric(node2));
         Assertions.assertTrue(solution.isSymmetric2(node1));
@@ -322,9 +319,7 @@ public class BinaryTreeTest {
         Assertions.assertTrue(solution.isBalanced(root));
         Assertions.assertTrue(solution.isBalanced(buildTreeNode(13)));
         Assertions.assertTrue(solution.isBalanced(node));
-        Assertions.assertFalse(
-                solution.isBalanced(
-                        buildTreeNode(new Integer[] {1, 2, 3, 4, 5, null, null, 8, 9})));
+        Assertions.assertFalse(solution.isBalanced(buildTreeNode(1, 2, 3, 4, 5, null, null, 8, 9)));
     }
 
     @Test
@@ -341,12 +336,9 @@ public class BinaryTreeTest {
 
     @Test
     public void testIsSameTree() {
-        BinaryTree.TreeNode node1 =
-                buildTreeNode(new Integer[] {1, 2, 6, null, 3, 3, null, 4, 5, 5, 4});
-        BinaryTree.TreeNode node2 =
-                buildTreeNode(new Integer[] {1, 2, 6, null, 3, 3, null, 4, 5, 5, 4});
-        BinaryTree.TreeNode node3 =
-                buildTreeNode(new Integer[] {1, 2, 6, null, 3, 3, null, 4, 5, 5, 7});
+        BinaryTree.TreeNode node1 = buildTreeNode(1, 2, 6, null, 3, 3, null, 4, 5, 5, 4);
+        BinaryTree.TreeNode node2 = buildTreeNode(1, 2, 6, null, 3, 3, null, 4, 5, 5, 4);
+        BinaryTree.TreeNode node3 = buildTreeNode(1, 2, 6, null, 3, 3, null, 4, 5, 5, 7);
         Assertions.assertTrue(solution.isSameTree(node1, node2));
         Assertions.assertFalse(solution.isSameTree(node1, node3));
     }
@@ -362,37 +354,30 @@ public class BinaryTreeTest {
         Assertions.assertEquals(4, solution.findBottomLeftValue(root));
         Assertions.assertEquals(5, solution.findBottomLeftValue(node));
         Assertions.assertEquals(
-                13,
-                solution.findBottomLeftValue(
-                        buildTreeNode(new Integer[] {1, 2, 3, null, null, 6, 7, 13})));
+                13, solution.findBottomLeftValue(buildTreeNode(1, 2, 3, null, null, 6, 7, 13)));
         Assertions.assertEquals(
                 7,
-                solution.findBottomLeftValue(
-                        buildTreeNode(new Integer[] {1, 2, 3, 4, null, 5, 6, null, null, 7})));
+                solution.findBottomLeftValue(buildTreeNode(1, 2, 3, 4, null, 5, 6, null, null, 7)));
     }
 
     @Test
     public void testHasPathSum() {
         Assertions.assertTrue(
                 solution.hasPathSum(
-                        buildTreeNode(
-                                new Integer[] {
-                                    5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1
-                                }),
-                        22));
-        Assertions.assertFalse(solution.hasPathSum(buildTreeNode(new Integer[] {1, 2, 3}), 5));
+                        buildTreeNode(5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1), 22));
+        Assertions.assertFalse(solution.hasPathSum(buildTreeNode(1, 2, 3), 5));
     }
 
     @Test
     public void testBuildTree() {
         Assertions.assertTrue(
                 solution.isSameTree(
-                        buildTreeNode(new Integer[] {3, 9, 20, null, null, 15, 7}),
+                        buildTreeNode(3, 9, 20, null, null, 15, 7),
                         solution.buildTree(
                                 new int[] {3, 9, 20, 15, 7}, new int[] {9, 3, 15, 20, 7})));
         Assertions.assertTrue(
                 solution.isSameTree(
-                        buildTreeNode(new Integer[] {3, 9, 20, null, null, 15, 7}),
+                        buildTreeNode(3, 9, 20, null, null, 15, 7),
                         solution.buildTree2(
                                 new int[] {9, 3, 15, 20, 7}, new int[] {9, 15, 7, 20, 3})));
     }
@@ -401,11 +386,11 @@ public class BinaryTreeTest {
     public void testConstructMaximumBinaryTree() {
         Assertions.assertTrue(
                 solution.isSameTree(
-                        buildTreeNode(new Integer[] {6, 3, 5, null, 2, 0, null, null, 1}),
+                        buildTreeNode(6, 3, 5, null, 2, 0, null, null, 1),
                         solution.constructMaximumBinaryTree(new int[] {3, 2, 1, 6, 0, 5})));
         Assertions.assertTrue(
                 solution.isSameTree(
-                        buildTreeNode(new Integer[] {3, null, 2, null, 1}),
+                        buildTreeNode(3, null, 2, null, 1),
                         solution.constructMaximumBinaryTree(new int[] {3, 2, 1})));
     }
 
@@ -413,30 +398,40 @@ public class BinaryTreeTest {
     public void testMergeTrees() {
         Assertions.assertTrue(
                 solution.isSameTree(
-                        buildTreeNode(new Integer[] {3, 4, 5, 5, 4, null, 7}),
+                        buildTreeNode(3, 4, 5, 5, 4, null, 7),
                         solution.mergeTrees(
-                                buildTreeNode(new Integer[] {1, 3, 2, 5}),
-                                buildTreeNode(new Integer[] {2, 1, 3, null, 4, null, 7}))));
+                                buildTreeNode(1, 3, 2, 5),
+                                buildTreeNode(2, 1, 3, null, 4, null, 7))));
     }
 
     @Test
     public void testSearchBST() {
         Assertions.assertTrue(
                 solution.isSameTree(
-                        buildTreeNode(new Integer[] {2, 1, 3}),
-                        solution.searchBST(buildTreeNode(new Integer[] {4, 2, 7, 1, 3}), 2)));
+                        buildTreeNode(2, 1, 3),
+                        solution.searchBST(buildTreeNode(4, 2, 7, 1, 3), 2)));
         Assertions.assertTrue(
-                solution.isSameTree(
-                        null, solution.searchBST(buildTreeNode(new Integer[] {4, 2, 7, 1, 3}), 5)));
+                solution.isSameTree(null, solution.searchBST(buildTreeNode(4, 2, 7, 1, 3), 5)));
     }
 
     @Test
     public void testIsValidBST() {
-        Assertions.assertTrue(solution.isValidBST(buildTreeNode(new Integer[] {2, 1, 3})));
-        Assertions.assertFalse(
-                solution.isValidBST(buildTreeNode(new Integer[] {5, 1, 4, null, null, 3, 6})));
-        Assertions.assertTrue(solution.isValidBST2(buildTreeNode(new Integer[] {2, 1, 3})));
-        Assertions.assertFalse(
-                solution.isValidBST2(buildTreeNode(new Integer[] {5, 1, 4, null, null, 3, 6})));
+        Assertions.assertTrue(solution.isValidBST(buildTreeNode(2, 1, 3)));
+        Assertions.assertFalse(solution.isValidBST(buildTreeNode(5, 1, 4, null, null, 3, 6)));
+        Assertions.assertTrue(solution.isValidBST2(buildTreeNode(2, 1, 3)));
+        Assertions.assertFalse(solution.isValidBST2(buildTreeNode(5, 1, 4, null, null, 3, 6)));
+    }
+
+    @Test
+    public void testGetMinimumDifference() {
+        Assertions.assertEquals(1, solution.getMinimumDifference(buildTreeNode(4, 2, 6, 1, 3)));
+        Assertions.assertEquals(
+                1, solution.getMinimumDifference(buildTreeNode(1, 0, 48, null, null, 12, 49)));
+        Assertions.assertEquals(1, solution.getMinimumDifference2(buildTreeNode(4, 2, 6, 1, 3)));
+        Assertions.assertEquals(
+                1, solution.getMinimumDifference2(buildTreeNode(1, 0, 48, null, null, 12, 49)));
+        Assertions.assertEquals(
+                47,
+                solution.getMinimumDifference2(buildTreeNode(543, 384, 652, null, 445, null, 699)));
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Tag(Type.BINARY_TREE)
 public class BinaryTree {
@@ -1161,7 +1162,7 @@ public class BinaryTree {
     @Tag(Type.ITERATION)
     public boolean isValidBST2(TreeNode root) {
         Stack<TreeNode> stack = new Stack<>();
-        Long pre = Long.MIN_VALUE;
+        long pre = Long.MIN_VALUE;
         while (root != null || !stack.isEmpty()) {
             while (root != null) {
                 stack.push(root);
@@ -1171,9 +1172,54 @@ public class BinaryTree {
             if (pre >= root.val) {
                 return false;
             }
-            pre = ((long) root.val);
+            pre = root.val;
             root = root.right;
         }
         return true;
+    }
+
+    /**
+     * 给你一个二叉搜索树的根节点 root ，返回 树中任意两不同节点值之间的最小差值 。
+     *
+     * <p>差值是一个正数，其数值等于两值之差的绝对值。
+     */
+    @Source(530)
+    @Tag(Type.ITERATION)
+    public int getMinimumDifference(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        long min = Long.MAX_VALUE;
+        int pre = Integer.MIN_VALUE;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            min = Math.min(min, ((long) root.val) - pre);
+            pre = root.val;
+            root = root.right;
+        }
+        return (int) min;
+    }
+
+    @Source(530)
+    @Tag(Type.RECURSIVE)
+    public int getMinimumDifference2(TreeNode root) {
+        AtomicReference<Integer> ans = new AtomicReference<>(Integer.MAX_VALUE);
+        getMinimumDifference(root, new AtomicReference<>(), ans);
+        return ans.get();
+    }
+
+    public void getMinimumDifference(
+            TreeNode root, AtomicReference<Integer> pre, AtomicReference<Integer> ans) {
+        if (root == null) {
+            return;
+        }
+        getMinimumDifference(root.left, pre, ans);
+        if (pre.get() != null) {
+            ans.set(Math.min(ans.get(), root.val - pre.get()));
+        }
+        pre.set(root.val);
+        getMinimumDifference(root.right, pre, ans);
     }
 }

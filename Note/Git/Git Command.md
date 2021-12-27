@@ -103,3 +103,12 @@ git merge --no-ff "feature-refactoring"
 git push origin "develop"
 ```
 
+### tag
+
+```bash
+# 获取远程仓库tag信息
+git fetch remote --tags/-t
+# 完全以远程仓库为基准更新tag
+git fetch remote --tags/-t --prune-tags/-P
+```
+

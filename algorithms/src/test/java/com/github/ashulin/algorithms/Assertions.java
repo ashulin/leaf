@@ -26,11 +26,11 @@ public class Assertions extends org.junit.jupiter.api.Assertions {
                 expected, actual.stream().mapToInt(Integer::intValue).toArray());
     }
 
-    public static void assertArrayEquals(int[][] expecteds, List<List<Integer>> actual) {
-        org.junit.jupiter.api.Assertions.assertEquals(expecteds.length, actual.size());
+    public static void assertArrayEquals(int[][] expected, List<List<Integer>> actual) {
+        org.junit.jupiter.api.Assertions.assertEquals(expected.length, actual.size());
         int i = 0;
         for (List<Integer> list : actual) {
-            assertArrayEquals(expecteds[i], list);
+            assertArrayEquals(expected[i], list);
             i++;
         }
     }
@@ -38,5 +38,14 @@ public class Assertions extends org.junit.jupiter.api.Assertions {
     public static void assertArrayEquals(double[] expected, List<Double> actual) {
         org.junit.jupiter.api.Assertions.assertArrayEquals(
                 expected, actual.stream().mapToDouble(Double::doubleValue).toArray());
+    }
+
+    public static void assertArrayEquals(String[][] expected, List<List<String>> actual) {
+        org.junit.jupiter.api.Assertions.assertEquals(expected.length, actual.size());
+        int i = 0;
+        for (List<String> list : actual) {
+            assertArrayEquals(expected[i], list.toArray(new String[0]));
+            i++;
+        }
     }
 }

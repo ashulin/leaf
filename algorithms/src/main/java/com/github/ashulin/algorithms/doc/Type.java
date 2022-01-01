@@ -31,6 +31,7 @@ public enum Type {
     MATRIX,
     LINKED_LIST,
     BINARY_TREE,
+    DP,
     /** 模拟. */
     SIM,
     MATH,

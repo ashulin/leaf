@@ -38,7 +38,7 @@ under the License.
 
         <auto-service.version>1.0.1</auto-service.version>
         <lombok.version>1.18.22</lombok.version>
-        <log4j.version>2.15.0</log4j.version>
+        <log4j.version>2.17.1</log4j.version>
         <junit.version>5.8.2</junit.version>
     </properties>
 

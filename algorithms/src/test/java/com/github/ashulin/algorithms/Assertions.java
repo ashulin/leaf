@@ -18,9 +18,24 @@
 
 package com.github.ashulin.algorithms;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 public class Assertions extends org.junit.jupiter.api.Assertions {
+
+    public static void assertArrayEquals(char[][] expected, char[][] actual) {
+        org.junit.jupiter.api.Assertions.assertEquals(expected.length, actual.length);
+        int i = 0;
+        for (char[] array : actual) {
+            assertArrayEquals(expected[i], array);
+            i++;
+        }
+    }
+
     public static void assertArrayEquals(int[] expected, List<Integer> actual) {
         org.junit.jupiter.api.Assertions.assertArrayEquals(
                 expected, actual.stream().mapToInt(Integer::intValue).toArray());
@@ -47,5 +62,14 @@ public class Assertions extends org.junit.jupiter.api.Assertions {
             assertArrayEquals(expected[i], list.toArray(new String[0]));
             i++;
         }
+    }
+
+    public static <T> T deepClone(T obj) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(obj);
+        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bis);
+        return (T) ois.readObject();
     }
 }

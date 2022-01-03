@@ -521,4 +521,342 @@ public class Backtracking {
             flag[i] = false;
         }
     }
+
+    /**
+     * n皇后问题 研究的是如何将 n个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+     *
+     * <p>给你一个整数 n ，返回所有不同的n皇后问题 的解决方案。
+     *
+     * <p>每一种解法包含一个不同的n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
+     *
+     * <p>皇后行动规则：米字行动，无距离限制；
+     */
+    @Source(51)
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> result = new ArrayList<>();
+        solveNQueens(new boolean[n][n], 0, result);
+        return result;
+    }
+
+    private void solveNQueens(boolean[][] chessboard, int row, List<List<String>> result) {
+        if (row == chessboard.length) {
+            result.add(toChessboard(chessboard));
+            return;
+        }
+        for (int col = 0; col < chessboard.length; col++) {
+            if (canAttack(chessboard, row, col)) {
+                continue;
+            }
+            chessboard[row][col] = true;
+            solveNQueens(chessboard, row + 1, result);
+            chessboard[row][col] = false;
+        }
+    }
+
+    private List<String> toChessboard(boolean[][] chessboard) {
+        List<String> ans = new ArrayList<>(chessboard.length);
+        for (boolean[] row : chessboard) {
+            StringBuilder builder = new StringBuilder();
+            for (boolean exist : row) {
+                builder.append(exist ? "Q" : ".");
+            }
+            ans.add(builder.toString());
+        }
+        return ans;
+    }
+
+    private boolean canAttack(boolean[][] chessboard, int row, int col) {
+        // 同列
+        for (int i = 0; i < row; i++) {
+            if (chessboard[i][col]) {
+                return true;
+            }
+        }
+        // 左上斜线
+        for (int y = row, x = col; y > 0 && x > 0; ) {
+            if (chessboard[--y][--x]) {
+                return true;
+            }
+        }
+        // 右上斜线
+        for (int y = row, x = col; y > 0 && x < chessboard.length - 1; ) {
+            if (chessboard[--y][++x]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * n皇后问题 研究的是如何将 n个皇后放置在 n × n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+     *
+     * <p>给你一个整数 n ，返回 n 皇后问题 不同的解决方案的数量。
+     */
+    @Source(52)
+    public int totalNQueens(int n) {
+        int[] result = new int[1];
+        totalNQueens(0, result, new boolean[n], new boolean[2 * n - 1], new boolean[2 * n - 1]);
+        return result[0];
+    }
+
+    private void totalNQueens(
+            int row,
+            int[] result,
+            boolean[] cols,
+            boolean[] leftDiagonals,
+            boolean[] rightDiagonals) {
+        if (row == cols.length) {
+            result[0]++;
+            return;
+        }
+
+        for (int col = 0; col < cols.length; col++) {
+            if (cols[col]) {
+                continue;
+            }
+            // 左至右斜下
+            int l = col - row + cols.length - 1;
+            if (leftDiagonals[l]) {
+                continue;
+            }
+            // 右至左斜下
+            int r = col + row;
+            if (rightDiagonals[r]) {
+                continue;
+            }
+
+            cols[col] = true;
+            leftDiagonals[l] = true;
+            rightDiagonals[r] = true;
+            totalNQueens(row + 1, result, cols, leftDiagonals, rightDiagonals);
+            cols[col] = false;
+            leftDiagonals[l] = false;
+            rightDiagonals[r] = false;
+        }
+    }
+
+    @Source(52)
+    public int totalNQueens2(int n) {
+        return dfs(n, 0, 0, 0, 0);
+    }
+
+    /**
+     * 位运算剪枝.
+     *
+     * <p>示例，n为5:
+     *
+     * <table border="3">
+     *   <tr>
+     *     <td> cols</td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 1 </td>  <td> 0 </td>
+     *   </tr>
+     *   <tr>
+     *     <td> left</td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 1 </td> <td> 0 </td>  <td> 0 </td>
+     *   </tr>
+     *   <tr>
+     *      <td> right</td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td>  <td> 1 </td>
+     *   </tr>
+     *   <tr>
+     *      <td> cols | left | right</td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 1 </td> <td> 1 </td>  <td> 1 </td>
+     *   </tr>
+     *   <tr>
+     *      <td> ~(cols | left | right)</td> <td> 1 </td> <td> 1 </td> <td> 1 </td> <td> 1 </td> <td> 1 </td> <td> 0 </td> <td> 0 </td>  <td> 0 </td> 可放的col bit为1，超出n长度的bit位也为1
+     *   </tr>
+     *   <tr>
+     *      <td> (1 << n) - 1 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 1 </td> <td> 1 </td> <td> 1 </td> <td> 1 </td>  <td> 1 </td> 将前n个bit处理为1
+     *   </tr>
+     *   <tr>
+     *      <td> ((1 << n) - 1) & (~(cols | left | right)) </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 1 </td> <td> 1 </td> <td> 0 </td> <td> 0 </td>  <td> 0 </td> 可放的col bit为1，超出n长度的bit位为0
+     *   </tr>
+     *   <tr>
+     *      <td> -positions </td> <td> 1 </td> <td> 1 </td> <td> 1 </td> <td> 0 </td> <td> 1 </td> <td> 0 </td> <td> 0 </td>  <td> 0 </td> 负数用补码（符号位1，真值部分取反+1）表示
+     *   </tr>
+     *   <tr>
+     *      <td> positions & (-positions) </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 1 </td> <td> 0 </td> <td> 0 </td>  <td> 0 </td> 取最低位的 1 的位置
+     *   </tr>
+     *   <tr>
+     *      <td> positions </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 1 </td> <td> 1 </td> <td> 0 </td> <td> 0 </td>  <td> 0 </td> 可放的col bit为1，超出n长度的bit位为0
+     *   </tr>
+     *   <tr>
+     *      <td> positions - 1</td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 1 </td> <td> 0 </td> <td> 1 </td> <td> 1 </td>  <td> 1 </td>
+     *   </tr>
+     *   <tr>
+     *      <td> positions & (positions - 1) </td> <td> 0 </td> <td> 0 </td> <td> 0 </td> <td> 1 </td> <td> 0 </td> <td> 0 </td> <td> 0 </td>  <td> 0 </td> 最低位的 1 置成 0
+     *   </tr>
+     * </table>
+     */
+    public int dfs(int n, int row, int cols, int left, int right) {
+        if (row == n) {
+            return 1;
+        }
+        int count = 0;
+        // 取得可选的位置
+        int positions = ((1 << n) - 1) & (~(cols | left | right));
+        while (positions != 0) {
+            // 取最低位的1
+            int position = positions & (-positions);
+            // 将最低位的1设置为0
+            positions = positions & (positions - 1);
+            count +=
+                    dfs(
+                            n,
+                            row + 1,
+                            cols | position,
+                            (left | position) << 1,
+                            (right | position) >> 1);
+        }
+        return count;
+    }
+
+    /**
+     * 编写一个程序，通过填充空格来解决数独问题。
+     *
+     * <p>数独的解法需 遵循如下规则：
+     *
+     * <p>数字1-9在每一行只能出现一次。 数字1-9在每一列只能出现一次。 数字1-9在每一个以粗实线分隔的3x3宫内只能出现一次。 数独部分空格内已填入了数字，空白格用'.'表示。
+     */
+    @Source(37)
+    public void solveSudoku(char[][] board) {
+        solveSudoku(board, 0, 0);
+    }
+
+    public boolean isValid(char[][] board, int row, int column, char target) {
+        for (int i = 0; i < 9; i++) {
+            // 同行
+            if (board[row][i] == target) {
+                return false;
+            }
+            // 同列
+            if (board[i][column] == target) {
+                return false;
+            }
+            // 当前九宫格
+            // (row / 3) * 3 : 当前九宫格的左上角位置 row
+            // (column / 3) * 3 : 当前九宫格的左上角位置 column
+            if (board[(row / 3) * 3 + i / 3][(column / 3) * 3 + i % 3] == target) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean solveSudoku(char[][] board, int row, int column) {
+        // 回溯 从左到右 从上到下
+
+        // 处理完成
+        if (row == 9) {
+            return true;
+        }
+
+        // 一层遍历完成，开始下一层
+        if (column == 9) {
+            return solveSudoku(board, row + 1, 0);
+        }
+
+        // 无需处理
+        if (board[row][column] != '.') {
+            return solveSudoku(board, row, column + 1);
+        }
+
+        // 尝试填数
+        for (char i = '1'; i <= '9'; i++) {
+            // 剪枝
+            if (!isValid(board, row, column, i)) {
+                continue;
+            }
+            board[row][column] = i;
+            if (solveSudoku(board, row, column + 1)) {
+                return true;
+            }
+            board[row][column] = '.';
+        }
+        return false;
+    }
+
+    @Source(37)
+    public static class Sudoku {
+        private static final int LEN = 9;
+        private static final int NINTH = (1 << 9) - 1;
+        private int[] rows;
+        private int[] cols;
+        private int[][] cells;
+
+        public void solveSudoku(char[][] board) {
+            // 使用位运算处理，记录每行每列每个九宫格数字的填写情况
+            rows = new int[LEN];
+            cols = new int[LEN];
+            cells = new int[3][3];
+
+            int space = 0;
+            // 存储填写情况
+            for (int row = 0; row < LEN; row++) {
+                for (int col = 0; col < LEN; col++) {
+                    if (board[row][col] == '.') {
+                        space++;
+                        continue;
+                    }
+                    flip(row, col, board[row][col] - '1');
+                }
+            }
+            dfs(board, space);
+        }
+
+        private boolean dfs(char[][] board, int space) {
+            if (space == 0) {
+                return true;
+            }
+
+            int[] next = getNext(board);
+            int row = next[0], col = next[1];
+            int digits = getPossibleDigits(row, col);
+            while (digits != 0) {
+                // (digits & (-digits))：取最低位的1
+                int index = Integer.bitCount((digits & (-digits)) - 1);
+                // 将最低位的1设置为0
+                digits = digits & (digits - 1);
+                flip(row, col, index);
+                board[row][col] = (char) (index + '1');
+                if (dfs(board, space - 1)) {
+                    return true;
+                }
+
+                board[row][col] = '.';
+                flip(row, col, index);
+            }
+            return false;
+        }
+
+        private int[] getNext(char[][] board) {
+            int[] position = new int[2];
+            int min = 10;
+            // 优先处理可能性更少的点
+            for (int row = 0; row < LEN; row++) {
+                for (int col = 0; col < LEN; col++) {
+                    if (board[row][col] != '.') {
+                        continue;
+                    }
+                    int digits = getPossibleDigits(row, col);
+                    int count = Integer.bitCount(digits);
+                    if (count < min) {
+                        min = count;
+                        position[0] = row;
+                        position[1] = col;
+                    }
+                    if (count == 1) {
+                        return position;
+                    }
+                }
+            }
+            return position;
+        }
+
+        private int getPossibleDigits(int row, int col) {
+            return NINTH & (~(rows[row] | cols[col] | cells[row / 3][col / 3]));
+        }
+
+        private void flip(int row, int col, int digit) {
+            rows[row] ^= (1 << digit);
+            cols[col] ^= (1 << digit);
+            cells[row / 3][col / 3] ^= (1 << digit);
+        }
+    }
 }

@@ -434,4 +434,49 @@ public class BinaryTreeTest {
                 47,
                 solution.getMinimumDifference2(buildTreeNode(543, 384, 652, null, 445, null, 699)));
     }
+
+    @Test
+    public void testFindMode() {
+        Assertions.assertArrayEquals(
+                new int[] {2}, solution.findMode(buildTreeNode(1, null, 2, 2)));
+    }
+
+    @Test
+    public void testLowestCommonAncestor() {
+        BinaryTree.TreeNode node = buildTreeNode(6, 2, 8, 0, 4, 7, 9, null, null, 3, 5);
+        Assertions.assertTrue(
+                solution.isSameTree(
+                        node,
+                        solution.lowestCommonAncestor(
+                                node, buildTreeNode(2, null), buildTreeNode(8, null))));
+        Assertions.assertTrue(
+                solution.isSameTree(
+                        buildTreeNode(2, 0, 4, null, null, 3, 5),
+                        solution.lowestCommonAncestor(
+                                node, buildTreeNode(2, null), buildTreeNode(4, null))));
+    }
+
+    @Test
+    public void testDeleteNode() {
+        Assertions.assertTrue(
+                solution.isSameTree(
+                        buildTreeNode(5, 4, 6, 2, null, null, 7),
+                        solution.deleteNode(buildTreeNode(5, 3, 6, 2, 4, null, 7), 3)));
+        Assertions.assertTrue(
+                solution.isSameTree(
+                        buildTreeNode(5, 3, 6, 2, 4, null, 7),
+                        solution.deleteNode(buildTreeNode(5, 3, 6, 2, 4, null, 7), 0)));
+        Assertions.assertTrue(
+                solution.isSameTree(
+                        buildTreeNode(6, 3, 7, 2, 4),
+                        solution.deleteNode(buildTreeNode(5, 3, 6, 2, 4, null, 7), 5)));
+    }
+
+    @Test
+    public void testSortedArrayToBST() {
+        Assertions.assertTrue(
+                solution.isValidBST(solution.sortedArrayToBST(new int[] {-10, -3, 0, 5, 9})));
+        Assertions.assertTrue(
+                solution.isValidBST(solution.sortedArrayToBST(new int[] {-10, -3, 0, 5, 9, 11})));
+    }
 }

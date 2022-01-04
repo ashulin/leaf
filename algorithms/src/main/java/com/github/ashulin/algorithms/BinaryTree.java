@@ -1222,4 +1222,222 @@ public class BinaryTree {
         pre.set(root.val);
         getMinimumDifference(root.right, pre, ans);
     }
+
+    /** 给定一个有相同值的二叉搜索树（BST），找出 BST 中的所有众数（出现频率最高的元素）。 */
+    @Source(501)
+    @Tag(Type.RECURSIVE)
+    public int[] findMode(TreeNode root) {
+        FindMode findMode = new FindMode();
+        return findMode.findMode(root);
+    }
+
+    public static class FindMode {
+        private List<Integer> result;
+        private Integer maxCount;
+        private Integer curCount;
+        private TreeNode pre;
+
+        public int[] findMode(TreeNode root) {
+            result = new ArrayList<>();
+            maxCount = 0;
+            curCount = 0;
+            pre = null;
+            findModeInternal(root);
+            int[] res = new int[result.size()];
+            for (int i = 0; i < result.size(); i++) {
+                res[i] = result.get(i);
+            }
+            return res;
+        }
+
+        private void findModeInternal(TreeNode root) {
+            if (root == null) {
+                return;
+            }
+
+            findModeInternal(root.left);
+            if (pre == null || pre.val != root.val) {
+                curCount = 1;
+            } else {
+                curCount++;
+            }
+            if (curCount > maxCount) {
+                maxCount = curCount;
+                result.clear();
+                result.add(root.val);
+            } else if (curCount.equals(maxCount)) {
+                result.add(root.val);
+            }
+            pre = root;
+            findModeInternal(root.right);
+        }
+    }
+
+    /**
+     * 给定一个二叉搜索树 BST, 找到该树中两个指定节点的最近公共祖先。
+     *
+     * <p>所有节点的值都是唯一的。 p、q 为不同节点且均存在于给定的二叉搜索树中。
+     */
+    @Source(235)
+    @Tag(Type.ITERATION)
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        while (root != null) {
+            if (root.val > p.val && root.val > q.val) {
+                root = root.left;
+            } else if (root.val < p.val && root.val < q.val) {
+                root = root.right;
+            } else {
+                return root;
+            }
+        }
+        return null;
+    }
+
+    /** 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。 */
+    @Source(236)
+    @Tag(Type.RECURSIVE)
+    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+        // 后序遍历
+        TreeNode left = lowestCommonAncestor2(root.left, p, q);
+        TreeNode right = lowestCommonAncestor2(root.right, p, q);
+        if (left == null && right == null) {
+            return null;
+        } else if (left != null && right == null) {
+            return left;
+        } else if (left == null) {
+            return right;
+        } else {
+            return root;
+        }
+    }
+
+    /** 给定二叉搜索树（BST）的根节点和要插入树中的值，将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 输入数据 保证 ，新值和原始二叉搜索树中的任意节点值都不同。 */
+    @Source(236)
+    @Tag(Type.RECURSIVE)
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        TreeNode node = new TreeNode(val);
+        if (root == null) {
+            return node;
+        }
+        TreeNode cur = root;
+        while (true) {
+            if (cur.val > val) {
+                if (cur.left == null) {
+                    cur.left = node;
+                    break;
+                }
+                cur = cur.left;
+            } else {
+                if (cur.right == null) {
+                    cur.right = node;
+                    break;
+                }
+                cur = cur.right;
+            }
+        }
+        return root;
+    }
+
+    /** 给定一个二叉搜索树的根节点 root 和一个值 key，删除二叉搜索树中的 key 对应的节点，并保证二叉搜索树的性质不变。返回二叉搜索树（有可能被更新）的根节点的引用。 */
+    @Source(450)
+    @Tag(Type.RECURSIVE)
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) {
+            return null;
+        }
+
+        if (root.val > key) {
+            root.left = deleteNode(root.left, key);
+        } else if (root.val < key) {
+            root.right = deleteNode(root.right, key);
+        } else {
+            if (root.left == null) {
+                return root.right;
+            }
+            if (root.right == null) {
+                return root.left;
+            }
+            // 左右孩子节点都不为空，则将删除节点的左子树放到删除节点的右子树的最左面节点的左孩子的位置
+            TreeNode mostLeft = root.right;
+            while (mostLeft.left != null) {
+                mostLeft = mostLeft.left;
+            }
+            mostLeft.left = root.left;
+            root.left = null;
+            root.val = mostLeft.val;
+            return root.right;
+        }
+        return root;
+    }
+
+    /**
+     * 给你二叉搜索树的根节点 root ，同时给定最小边界low 和最大边界 high。通过修剪二叉搜索树，使得所有节点的值在[low,
+     * high]中。修剪树不应该改变保留在树中的元素的相对结构（即，如果没有被移除，原有的父代子代关系都应当保留）。 可以证明，存在唯一的答案。
+     *
+     * <p>所以结果应当返回修剪好的二叉搜索树的新的根节点。注意，根节点可能会根据给定的边界发生改变。
+     */
+    @Source(669)
+    @Tag(Type.RECURSIVE)
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        if (root == null) {
+            return null;
+        }
+        if (root.val > high) {
+            return trimBST(root.left, low, high);
+        } else if (root.val < low) {
+            return trimBST(root.right, low, high);
+        }
+        root.left = trimBST(root.left, low, high);
+        root.right = trimBST(root.right, low, high);
+        return root;
+    }
+
+    /**
+     * 给你一个整数数组 nums ，其中元素已经按 升序 排列，请你将其转换为一棵 高度平衡 二叉搜索树。
+     *
+     * <p>高度平衡 二叉树是一棵满足「每个节点的左右两个子树的高度差的绝对值不超过 1 」的二叉树。
+     */
+    @Source(108)
+    @Tag(Type.RECURSIVE)
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return sortedArrayToBST(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode sortedArrayToBST(int[] nums, int left, int right) {
+        if (left > right) {
+            return null;
+        }
+        int mid = left + (right - left) / 2;
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = sortedArrayToBST(nums, left, mid - 1);
+        root.right = sortedArrayToBST(nums, mid + 1, right);
+        return root;
+    }
+
+    /**
+     * 给出二叉 搜索 树的根节点，该树的节点值各不相同，请你将其转换为累加树（Greater Sum Tree），使每个节点 node的新值等于原树中大于或等于node.val的值之和。
+     */
+    @Source(538)
+    @Source(1038)
+    @Tag(Type.RECURSIVE)
+    public TreeNode convertBST(TreeNode root) {
+        TreeNode ans = root;
+        // 右中左，即反序中序遍历累加即可
+        Stack<TreeNode> stack = new Stack<>();
+        int sum = 0;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.right;
+            }
+            root = stack.pop();
+            sum += root.val;
+            root.val = sum;
+            root = root.left;
+        }
+        return ans;
+    }
 }

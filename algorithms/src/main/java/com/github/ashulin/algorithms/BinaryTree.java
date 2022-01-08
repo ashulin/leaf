@@ -34,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -1457,5 +1458,45 @@ public class BinaryTree {
             root = root.left;
         }
         return ans;
+    }
+
+    /**
+     * 给定一个二叉树，我们在树的节点上安装摄像头。
+     *
+     * <p>节点上的每个摄影头都可以监视其父对象、自身及其直接子对象。
+     *
+     * <p>计算监控树的所有节点所需的最小摄像头数量。
+     */
+    @Source(968)
+    public int minCameraCover(TreeNode root) {
+        AtomicInteger ans = new AtomicInteger(0);
+        // 主节点未被监控覆盖，添加监控
+        if (minCameraCover(root, ans) == 0) {
+            ans.incrementAndGet();
+        }
+        return ans.get();
+    }
+
+    /** 0: 未被监控覆盖； 1: 该节点已安装监控，2: 该节点被监控覆盖。 */
+    private int minCameraCover(TreeNode root, AtomicInteger ans) {
+        if (root == null) {
+            // 空节点无意义
+            return -1;
+        }
+        int left = minCameraCover(root.left, ans);
+        int right = minCameraCover(root.right, ans);
+
+        // 子节点存在未被监控的，在该节点安装监控
+        if (left == 0 || right == 0) {
+            ans.incrementAndGet();
+            return 1;
+        }
+
+        // 子节点存在监控，表示该节点已被监控
+        if (left == 1 || right == 1) {
+            return 2;
+        }
+        // 子节点不存在监控，且未在该节点安装监控，表示该节点未被监控
+        return 0;
     }
 }

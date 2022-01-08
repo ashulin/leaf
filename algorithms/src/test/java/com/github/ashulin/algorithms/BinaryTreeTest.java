@@ -479,4 +479,11 @@ public class BinaryTreeTest {
         Assertions.assertTrue(
                 solution.isValidBST(solution.sortedArrayToBST(new int[] {-10, -3, 0, 5, 9, 11})));
     }
+
+    @Test
+    public void testMinCameraCover() {
+        Assertions.assertEquals(1, solution.minCameraCover(buildTreeNode(0, 0, null, 0, 0)));
+        Assertions.assertEquals(
+                2, solution.minCameraCover(buildTreeNode(0, 0, null, 0, null, 0, null, null, 0)));
+    }
 }

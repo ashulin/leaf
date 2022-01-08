@@ -276,6 +276,15 @@ public class Greedy {
         return que.toArray(new int[people.length][]);
     }
 
+    /**
+     * 在二维空间中有许多球形的气球。对于每个气球，提供的输入是水平方向上，气球直径的开始和结束坐标。由于它是水平的，所以纵坐标并不重要，因此只要知道开始和结束的横坐标就足够了。开始坐标总是小于结束坐标。
+     *
+     * <p>一支弓箭可以沿着 x 轴从不同点完全垂直地射出。在坐标 x 处射出一支箭，若有一个气球的直径的开始和结束坐标为 xstart，xend， 且满足 xstart≤ x ≤
+     * xend，则该气球会被引爆。可以射出的弓箭的数量没有限制。 弓箭一旦被射出之后，可以无限地前进。我们想找到使得所有气球全部被引爆，所需的弓箭的最小数量。
+     *
+     * <p>给你一个数组 points ，其中 points [i] = [xstart,xend] ，返回引爆所有气球所必须射出的最小弓箭数。
+     */
+    @Source(452)
     public int findMinArrowShots(int[][] points) {
         if (points.length == 0) {
             return 0;
@@ -287,6 +296,129 @@ public class Greedy {
                 ans++;
             } else {
                 points[i][1] = Math.min(points[i][1], points[i - 1][1]);
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。
+     *
+     * <p>注意:
+     *
+     * <p>可以认为区间的终点总是大于它的起点。 区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。
+     */
+    @Source(435)
+    public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals.length < 2) {
+            return 0;
+        }
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[1]));
+        int end = intervals[0][1];
+        int ans = 0;
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] < end) {
+                ans++;
+            } else {
+                end = intervals[i][1];
+            }
+        }
+        return ans;
+    }
+
+    /** 字符串 S 由小写字母组成。我们要把这个字符串划分为尽可能多的片段，同一字母最多出现在一个片段中。返回一个表示每个字符串片段的长度的列表。 */
+    @Source(763)
+    public List<Integer> partitionLabels(String s) {
+        int[] hash = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            hash[s.charAt(i) - 'a'] = i;
+        }
+        List<Integer> ans = new ArrayList<>();
+        int left = -1;
+        int right = 0;
+        for (int i = 0; i < s.length(); i++) {
+            right = Math.max(right, hash[s.charAt(i) - 'a']);
+            if (i == right) {
+                ans.add(right - left);
+                left = right;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi]
+     * 。请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
+     */
+    @Source(56)
+    public int[][] merge(int[][] intervals) {
+        if (intervals.length < 2) {
+            return intervals;
+        }
+
+        List<int[]> ans = new ArrayList<>();
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        ans.add(intervals[0]);
+        int[] last;
+        for (int i = 1; i < intervals.length; i++) {
+            last = ans.get(ans.size() - 1);
+            if (intervals[i][0] <= last[1]) {
+                last[1] = Math.max(last[1], intervals[i][1]);
+            } else {
+                ans.add(intervals[i]);
+            }
+        }
+        return ans.toArray(new int[ans.size()][]);
+    }
+
+    /**
+     * 给定一个非负整数N，找出小于或等于N的最大的整数，同时这个整数需要满足其各个位数上的数字是单调递增。
+     *
+     * <p>（当且仅当每个相邻位数上的数字x和y满足x <= y时，我们称这个整数是单调递增的。）
+     */
+    @Source(738)
+    public int monotoneIncreasingDigits(int n) {
+        boolean inc = true;
+        char[] nums = Integer.toString(n).toCharArray();
+        int maxIndex = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] < nums[i - 1]) {
+                inc = false;
+                break;
+            }
+            if (nums[i] > nums[i - 1]) {
+                maxIndex = i;
+            }
+        }
+        if (inc) {
+            return n;
+        }
+        int digit = (int) (Math.pow(10, nums.length - maxIndex - 1));
+        return n / digit * digit - 1;
+    }
+
+    /**
+     * 给定一个整数数组prices，其中第i个元素代表了第i天的股票价格 ；整数fee 代表了交易股票的手续费用。
+     *
+     * <p>你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。
+     *
+     * <p>返回获得利润的最大值。
+     *
+     * <p>注意：这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
+     */
+    @Source(714)
+    public int maxProfit(int[] prices, int fee) {
+        int buy = prices[0] + fee;
+        int ans = 0;
+        for (int i = 1; i < prices.length; i++) {
+            // 买入价格
+            if (prices[i] + fee < buy) {
+                buy = prices[i] + fee;
+            } else if (prices[i] > buy) {
+                // 计算利润，可能有多次计算利润，最后一次计算利润才是真正意义的卖出
+                ans += prices[i] - buy;
+                // 持有股票
+                buy = prices[i];
             }
         }
         return ans;

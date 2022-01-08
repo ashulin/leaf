@@ -39,4 +39,10 @@ public class DynamicProgrammingTest {
         Assertions.assertEquals(23, solution.maxSubArray(new int[] {5, 4, -1, 7, 8}));
         Assertions.assertEquals(-1, solution.maxSubArray(new int[] {-5, -4, -1, -7, -8}));
     }
+
+    @Test
+    public void testMaxProfit() {
+        Assertions.assertEquals(8, solution.maxProfit(new int[] {1, 3, 2, 8, 4, 9}, 2));
+        Assertions.assertEquals(6, solution.maxProfit(new int[] {1, 3, 7, 5, 10, 3}, 3));
+    }
 }

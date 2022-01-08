@@ -47,6 +47,8 @@ public class GreedyTest {
         Assertions.assertEquals(7, solution.maxProfit(new int[] {7, 1, 5, 3, 6, 4}));
         Assertions.assertEquals(4, solution.maxProfit(new int[] {1, 2, 3, 4, 5}));
         Assertions.assertEquals(0, solution.maxProfit(new int[] {7, 6, 4, 3, 1}));
+        Assertions.assertEquals(8, solution.maxProfit(new int[] {1, 3, 2, 8, 4, 9}, 2));
+        Assertions.assertEquals(6, solution.maxProfit(new int[] {1, 3, 7, 5, 10, 3}, 3));
     }
 
     @Test
@@ -106,5 +108,62 @@ public class GreedyTest {
                 new int[][] {{4, 0}, {5, 0}, {2, 2}, {3, 2}, {1, 4}, {6, 0}},
                 solution.reconstructQueue(
                         new int[][] {{6, 0}, {5, 0}, {4, 0}, {3, 2}, {2, 2}, {1, 4}}));
+    }
+
+    @Test
+    public void testFindMinArrowShots() {
+        Assertions.assertEquals(
+                2, solution.findMinArrowShots(new int[][] {{10, 16}, {2, 8}, {1, 6}, {7, 12}}));
+        Assertions.assertEquals(
+                4, solution.findMinArrowShots(new int[][] {{1, 2}, {3, 4}, {5, 6}, {7, 8}}));
+        Assertions.assertEquals(
+                2, solution.findMinArrowShots(new int[][] {{1, 2}, {2, 3}, {3, 4}, {4, 5}}));
+        Assertions.assertEquals(1, solution.findMinArrowShots(new int[][] {{1, 2}}));
+        Assertions.assertEquals(1, solution.findMinArrowShots(new int[][] {{2, 3}, {2, 3}}));
+    }
+
+    @Test
+    public void testEraseOverlapIntervals() {
+        Assertions.assertEquals(
+                1, solution.eraseOverlapIntervals(new int[][] {{1, 2}, {2, 3}, {3, 4}, {1, 3}}));
+        Assertions.assertEquals(
+                2, solution.eraseOverlapIntervals(new int[][] {{1, 2}, {1, 2}, {1, 2}}));
+        Assertions.assertEquals(
+                1, solution.eraseOverlapIntervals(new int[][] {{1, 3}, {1, 2}, {2, 3}}));
+        Assertions.assertEquals(
+                3,
+                solution.eraseOverlapIntervals(
+                        new int[][] {{0, 5}, {1, 2}, {-1, 2}, {-2, 2}, {2, 5}}));
+        Assertions.assertEquals(0, solution.eraseOverlapIntervals(new int[][] {{1, 2}, {2, 3}}));
+        Assertions.assertEquals(
+                7,
+                solution.eraseOverlapIntervals(
+                        new int[][] {
+                            {-52, 31}, {-73, -26}, {82, 97}, {-65, -11}, {-62, -49}, {95, 99},
+                            {58, 95}, {-31, 49}, {66, 98}, {-63, 2}, {30, 47}, {-40, -26}
+                        }));
+    }
+
+    @Test
+    public void testPartitionLabels() {
+        Assertions.assertArrayEquals(
+                new int[] {9, 7, 8}, solution.partitionLabels("ababcbacadefegdehijhklij"));
+    }
+
+    @Test
+    public void testMerge() {
+        Assertions.assertArrayEquals(
+                new int[][] {{1, 6}, {8, 10}, {15, 18}},
+                solution.merge(new int[][] {{1, 3}, {2, 6}, {8, 10}, {15, 18}}));
+        Assertions.assertArrayEquals(
+                new int[][] {{1, 5}}, solution.merge(new int[][] {{1, 4}, {4, 5}}));
+    }
+
+    @Test
+    public void testMonotoneIncreasingDigits() {
+        Assertions.assertEquals(299, solution.monotoneIncreasingDigits(332));
+        Assertions.assertEquals(1234, solution.monotoneIncreasingDigits(1234));
+        Assertions.assertEquals(99, solution.monotoneIncreasingDigits(110));
+        Assertions.assertEquals(99, solution.monotoneIncreasingDigits(110));
     }
 }

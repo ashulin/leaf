@@ -18,6 +18,7 @@
 
 package com.github.ashulin.algorithms;
 
+import com.github.ashulin.algorithms.doc.Complexity;
 import com.github.ashulin.algorithms.doc.Source;
 
 public class DynamicProgramming {
@@ -89,5 +90,171 @@ public class DynamicProgramming {
             saleStock = Math.max(saleStock, holdStock + prices[i] - fee);
         }
         return saleStock;
+    }
+
+    /**
+     * 斐波那契数，通常用 F(n) 表示，形成的序列称为 斐波那契数列 。该数列由 0 和 1 开始，后面的每一项数字都是前面两项数字的和。
+     *
+     * <p>其中：F(0) = 0，F(1) = 1
+     */
+    @Source(509)
+    public int fib(int n) {
+        if (n < 2) {
+            return n;
+        }
+        int pre2 = 0;
+        int pre1 = 1;
+        int ans = 0;
+        int num = 2;
+        while (num++ <= n) {
+            ans = pre1 + pre2;
+            pre2 = pre1;
+            pre1 = ans;
+        }
+        return ans;
+    }
+
+    /**
+     * 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+     *
+     * <p>每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+     *
+     * <p>注意：给定 n 是一个正整数。
+     */
+    @Source(70)
+    public int climbStairs(int n) {
+        if (n < 3) {
+            return n;
+        }
+        int pre2 = 1;
+        int pre1 = 2;
+        int fn = 0;
+        int num = 3;
+        while (num++ <= n) {
+            // f(n) = f(n - 1) + f(n - 2), (n > 2)
+            fn = pre1 + pre2;
+            pre2 = pre1;
+            pre1 = fn;
+        }
+        return fn;
+    }
+
+    /**
+     * 给你一个整数数组 cost ，其中 cost[i] 是从楼梯第 i 个台阶向上爬需要支付的费用。一旦你支付此费用，即可选择向上爬一个或者两个台阶。
+     *
+     * <p>你可以选择从下标为 0 或下标为 1 的台阶开始爬楼梯。
+     *
+     * <p>请你计算并返回达到楼梯顶部的最低花费。
+     *
+     * <p>2 <= cost.length <= 1000 0 <= cost[i] <= 999
+     */
+    @Source(746)
+    public int minCostClimbingStairs(int[] cost) {
+        int preMin1 = cost[1];
+        int preMin2 = cost[0];
+        int fn = 0;
+        for (int n = 2; n <= cost.length; n++) {
+            // f(n) = min(f(n-1), f(n-2)) + cost(n)
+            fn = Math.min(preMin1, preMin2) + (n == cost.length ? 0 : cost[n]);
+            preMin2 = preMin1;
+            preMin1 = fn;
+        }
+        return fn;
+    }
+
+    /**
+     * 一个机器人位于一个 m x n网格的左上角 （起始点在下图中标记为 “Start” ）。
+     *
+     * <p>机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+     *
+     * <p>问总共有多少条不同的路径？
+     *
+     * <p>1 <= m, n <= 100
+     */
+    @Source(62)
+    @Complexity(time = "O(m*n)", space = "O(min(m,n))")
+    public int uniquePaths(int m, int n) {
+        if (m > n) {
+            int temp = n;
+            n = m;
+            m = temp;
+        }
+        int[] dp = new int[m];
+        dp[0] = 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                dp[j] += dp[j - 1];
+            }
+        }
+        return dp[m - 1];
+    }
+
+    /**
+     * 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
+     *
+     * <p>机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。
+     *
+     * <p>现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
+     *
+     * <p>网格中的障碍物和空位置分别用 1 和 0 来表示。
+     */
+    @Source(63)
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid[0].length;
+        int n = obstacleGrid.length;
+        int[] dp = new int[m];
+        dp[0] = 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (obstacleGrid[i][j] == 1) {
+                    dp[j] = 0;
+                } else if (j > 0) {
+                    dp[j] += dp[j - 1];
+                }
+            }
+        }
+        return dp[m - 1];
+    }
+
+    /**
+     * 给定一个正整数 n，将其拆分为至少两个正整数的和，并使这些整数的乘积最大化。 返回你可以获得的最大乘积。
+     *
+     * <p>你可以假设 2 <= n <= 58。
+     */
+    @Source(343)
+    public int integerBreak(int n) {
+        if (n <= 3) {
+            return n - 1;
+        }
+        int ans = 1;
+        // 经过简单测试可得：拆成最多的3时值最大；<=4时继续拆分值将变小
+        while (n > 4) {
+            ans *= 3;
+            n -= 3;
+        }
+        return ans * n;
+    }
+
+    /**
+     * 给你一个整数 n ，求恰由 n 个节点组成且节点值从 1 到 n 互不相同的 二叉搜索树 有多少种？返回满足题意的二叉搜索树的种数。
+     *
+     * <p>1 <= n <= 19
+     */
+    @Source(96)
+    public int numTrees(int n) {
+        // 初始化 dp 数组
+        int[] dp = new int[n + 1];
+        // 初始化0个节点和1个节点的情况
+        dp[0] = 1;
+        dp[1] = 1;
+        // f(n) = sum(f(i-1)*f(n-i)), 其中i:[1,n)
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                // 对于第i个节点，需要考虑1作为根节点直到i作为根节点的情况，所以需要累加
+                // 一共i个节点，对于根节点j时,左子树的节点个数为j-1，右子树的节点个数为i-j
+                dp[i] += dp[j - 1] * dp[i - j];
+            }
+        }
+        return dp[n];
     }
 }

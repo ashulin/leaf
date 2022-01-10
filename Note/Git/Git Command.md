@@ -112,3 +112,14 @@ git fetch remote --tags/-t
 git fetch remote --tags/-t --prune-tags/-P
 ```
 
+### stash
+
+```bash
+# 查看stash
+git stash list
+#stash@{0}: On 1: Pull autostash 2022/1/10 18:53:18
+
+# 删除stash
+git stash drop 0
+```
+

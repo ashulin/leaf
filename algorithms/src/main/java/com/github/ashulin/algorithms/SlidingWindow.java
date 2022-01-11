@@ -231,4 +231,65 @@ public class SlidingWindow {
         }
         return min == Integer.MAX_VALUE ? "" : s.substring(minStartIndex, minStartIndex + min);
     }
+
+    /** 给两个整数数组 A 和 B ，返回两个数组中公共的、长度最长的子数组的长度。 */
+    @Source(718)
+    public int findLength(int[] a, int[] b) {
+        return a.length <= b.length ? findMax(a, b) : findMax(b, a);
+    }
+
+    private int findMax(int[] nums1, int[] nums2) {
+        int m = nums1.length;
+        int n = nums2.length;
+        int max = 0;
+
+        /*
+        A:            |*|*|*|*|
+        B: |*|*|*|*|*|*|
+                 ↓
+        A:       |*|*|*|*|
+        B: |*|*|*|*|*|*|
+         */
+        for (int len = 1; len < m; len++) {
+            max = Math.max(max, find(nums1, 0, nums2, n - len, len));
+        }
+
+        /*
+        A:     |*|*|*|*|
+        B: |*|*|*|*|*|*|
+                 ↓
+        A: |*|*|*|*|
+        B: |*|*|*|*|*|*|
+         */
+        for (int j = n - m; j >= 0; j--) {
+            max = Math.max(max, find(nums1, 0, nums2, j, m));
+        }
+
+        /*
+        A: |*|*|*|*|
+        B:   |*|*|*|*|*|*|
+                 ↓
+        A: |*|*|*|*|
+        B:       |*|*|*|*|*|*|
+         */
+        for (int len = m - 1; len > 0; len--) {
+            max = Math.max(max, find(nums1, m - len, nums2, 0, len));
+        }
+
+        return max;
+    }
+
+    private int find(int[] a, int aStartIndex, int[] b, int bStartIndex, int len) {
+        int max = 0, count = 0;
+        for (int k = 0; k < len; k++) {
+            if (a[aStartIndex + k] == b[bStartIndex + k]) {
+                count++;
+                max = Math.max(max, count);
+            } else {
+                count = 0;
+            }
+        }
+
+        return max;
+    }
 }

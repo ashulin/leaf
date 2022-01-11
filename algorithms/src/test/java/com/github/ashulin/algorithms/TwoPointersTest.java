@@ -86,4 +86,10 @@ public class TwoPointersTest {
         Assertions.assertArrayEquals(
                 new int[] {0, 9, 49, 81, 144}, solution.sortedSquares(new int[] {-7, 0, 3, 9, 12}));
     }
+
+    @Test
+    public void testIsSubsequence() {
+        Assertions.assertTrue(solution.isSubsequence("abc", "ahbgdc"));
+        Assertions.assertFalse(solution.isSubsequence("axc", "ahbgdc"));
+    }
 }

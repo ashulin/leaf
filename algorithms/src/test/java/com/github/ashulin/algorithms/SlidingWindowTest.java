@@ -65,4 +65,10 @@ public class SlidingWindowTest {
         Assertions.assertEquals("a", solution.minWindow2("a", "a"));
         Assertions.assertEquals("BANC", solution.minWindow2("ADOBECODEBANC", "ABC"));
     }
+
+    @Test
+    public void testFindLength() {
+        Assertions.assertEquals(
+                3, solution.findLength(new int[] {1, 2, 3, 2, 1}, new int[] {3, 2, 1, 4, 7}));
+    }
 }

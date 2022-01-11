@@ -21,6 +21,8 @@ package com.github.ashulin.algorithms.dp;
 import com.github.ashulin.algorithms.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 public class BackpackTest {
     private final Backpack solution = new Backpack();
 
@@ -62,5 +64,29 @@ public class BackpackTest {
     public void testCombinationSum4() {
         Assertions.assertEquals(7, solution.combinationSum4(new int[] {1, 2, 3}, 4));
         Assertions.assertEquals(0, solution.combinationSum4(new int[] {9}, 3));
+    }
+
+    @Test
+    public void testCoinChange() {
+        Assertions.assertEquals(3, solution.coinChange(new int[] {1, 2, 5}, 11));
+        Assertions.assertEquals(-1, solution.coinChange(new int[] {2}, 3));
+        Assertions.assertEquals(0, solution.coinChange(new int[] {1}, 0));
+        Assertions.assertEquals(1, solution.coinChange(new int[] {1}, 1));
+        Assertions.assertEquals(2, solution.coinChange(new int[] {1}, 2));
+    }
+
+    @Test
+    public void testNumSquares() {
+        Assertions.assertEquals(3, solution.numSquares(12));
+        Assertions.assertEquals(2, solution.numSquares(13));
+    }
+
+    @Test
+    public void testWordBreak() {
+        Assertions.assertTrue(solution.wordBreak("leetcode", Arrays.asList("leet", "code")));
+        Assertions.assertTrue(solution.wordBreak("applepenapple", Arrays.asList("apple", "pen")));
+        Assertions.assertFalse(
+                solution.wordBreak(
+                        "catsandog", Arrays.asList("cats", "dog", "sand", "and", "cat")));
     }
 }

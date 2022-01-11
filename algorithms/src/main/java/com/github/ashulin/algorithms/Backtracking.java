@@ -859,4 +859,36 @@ public class Backtracking {
             cells[row / 3][col / 3] ^= (1 << digit);
         }
     }
+
+    /**
+     * 给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。
+     *
+     * <p>注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+     */
+    @Source(139)
+    public boolean wordBreak(String s, List<String> wordDict) {
+        return wordBreak(s, wordDict, 0, new int[s.length()]);
+    }
+
+    private boolean wordBreak(String s, List<String> wordDict, int start, int[] memory) {
+        // 基础回溯超时
+        if (start == s.length()) {
+            return true;
+        }
+        if (memory[start] != 0) {
+            return memory[start] == 1;
+        }
+        for (String word : wordDict) {
+            if (start + word.length() > s.length()) {
+                continue;
+            }
+            if (word.equals(s.substring(start, start + word.length()))
+                    && wordBreak(s, wordDict, start + word.length(), memory)) {
+                memory[start] = 1;
+                return true;
+            }
+        }
+        memory[start] = -1;
+        return false;
+    }
 }

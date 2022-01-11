@@ -22,6 +22,9 @@ import com.github.ashulin.algorithms.doc.Source;
 import com.github.ashulin.algorithms.doc.Tag;
 import com.github.ashulin.algorithms.doc.Type;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Tag(Type.DP)
 public class Backpack {
 
@@ -222,5 +225,77 @@ public class Backpack {
         }
 
         return dp[n];
+    }
+
+    /**
+     * 给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。
+     *
+     * <p>计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回-1 。
+     *
+     * <p>你可以认为每种硬币的数量是无限的。
+     *
+     * <p>1 <= coins[i] <= 231 - 1 0 <= amount <= 104
+     */
+    @Source(322)
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                if (i >= coin) {
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+    /**
+     * 给定正整数n，找到若干个完全平方数（比如1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
+     *
+     * <p>给你一个整数 n ，返回和为 n 的完全平方数的 最少数量 。
+     *
+     * <p>完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
+     */
+    @Source(279)
+    public int numSquares(int n) {
+        int[] dp = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            int minn = Integer.MAX_VALUE;
+            for (int j = 1; j * j <= i; j++) {
+                minn = Math.min(minn, dp[i - j * j]);
+            }
+            dp[i] = minn + 1;
+        }
+        return dp[n];
+    }
+
+    /**
+     * 给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。
+     *
+     * <p>注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+     */
+    @Source(139)
+    public boolean wordBreak(String s, List<String> wordDict) {
+        final boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+
+        int endIndex;
+        for (int i = 1; i <= s.length(); i++) {
+            if (!dp[i - 1]) {
+                continue;
+            }
+            for (String word : wordDict) {
+                endIndex = i - 1 + word.length();
+                if (endIndex > s.length()) {
+                    continue;
+                }
+                if (word.equals(s.substring(i - 1, endIndex))) {
+                    dp[endIndex] = true;
+                }
+            }
+        }
+        return dp[s.length()];
     }
 }

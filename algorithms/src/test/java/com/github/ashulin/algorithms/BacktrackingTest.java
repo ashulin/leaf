@@ -242,4 +242,13 @@ public class BacktrackingTest {
         new Backtracking.Sudoku().solveSudoku(board);
         Assertions.assertArrayEquals(expectedBoard, board);
     }
+
+    @Test
+    public void testWordBreak() {
+        Assertions.assertTrue(solution.wordBreak("leetcode", Arrays.asList("leet", "code")));
+        Assertions.assertTrue(solution.wordBreak("applepenapple", Arrays.asList("apple", "pen")));
+        Assertions.assertFalse(
+                solution.wordBreak(
+                        "catsandog", Arrays.asList("cats", "dog", "sand", "and", "cat")));
+    }
 }

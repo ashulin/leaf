@@ -18,6 +18,7 @@
 
 package com.github.ashulin.algorithms;
 
+import com.github.ashulin.algorithms.BinaryTree.TreeNode;
 import com.github.ashulin.algorithms.doc.Complexity;
 import com.github.ashulin.algorithms.doc.Source;
 
@@ -256,5 +257,128 @@ public class DynamicProgramming {
             }
         }
         return dp[n];
+    }
+
+    /**
+     * 你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统:
+     *
+     * <p>如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+     *
+     * <p>给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
+     */
+    @Source(198)
+    public int rob(int[] nums) {
+        int[][] dp = new int[2][nums.length + 1];
+        for (int i = 1; i <= nums.length; i++) {
+            // 不偷窃
+            dp[0][i] = Math.max(dp[0][i - 1], dp[1][i - 1]);
+            // 偷窃
+            dp[1][i] = dp[0][i - 1] + nums[i - 1];
+        }
+        return Math.max(dp[0][nums.length], dp[1][nums.length]);
+    }
+
+    @Source(198)
+    public int rob2(int[] nums) {
+        int select = 0;
+        int unselect = 0;
+        for (int num : nums) {
+            int temp = unselect;
+            unselect = Math.max(select, unselect);
+            select = temp + num;
+        }
+        return Math.max(select, unselect);
+    }
+
+    /**
+     * 你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈
+     * ，这意味着第一个房屋和最后一个房屋是紧挨着的。同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
+     *
+     * <p>给定一个代表每个房屋存放金额的非负整数数组，计算你 在不触动警报装置的情况下 ，今晚能够偷窃到的最高金额。
+     */
+    @Source(213)
+    public int rob3(int[] nums) {
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        int[] ans = rob(nums, true);
+        if (ans[0] >= ans[1]) {
+            // 不选择最后的房屋金额也是最大的
+            return ans[0];
+        }
+        return Math.max(rob(nums, false)[0], ans[0]);
+    }
+
+    private int[] rob(int[] nums, boolean positive) {
+        int[] ans = new int[2];
+        for (int i = 0; i < nums.length; i++) {
+            int temp = ans[0];
+            ans[0] = Math.max(ans[0], ans[1]);
+            ans[1] = temp + nums[positive ? i : nums.length - 1 - i];
+        }
+        return ans;
+    }
+
+    /**
+     * 在上次打劫完一条街道之后和一圈房屋后，小偷又发现了一个新的可行窃的地区。这个地区只有一个入口，我们称之为“根”。
+     *
+     * <p>除了“根”之外，每栋房子有且只有一个“父“房子与之相连。一番侦察之后，聪明的小偷意识到“这个地方的所有房屋的排列类似于一棵二叉树”。
+     *
+     * <p>如果两个直接相连的房子在同一天晚上被打劫，房屋将自动报警。
+     *
+     * <p>计算在不触动警报的情况下，小偷一晚能够盗取的最高金额。
+     */
+    @Source(337)
+    public int rob(TreeNode root) {
+        int[] ans = robMoney(root);
+        return Math.max(ans[0], ans[1]);
+    }
+
+    private int[] robMoney(TreeNode root) {
+        int[] ans = new int[2];
+        if (root == null) {
+            return ans;
+        }
+        int[] left = robMoney(root.left);
+        int[] right = robMoney(root.right);
+        ans[0] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+        ans[1] = root.val + left[0] + right[0];
+        return ans;
+    }
+
+    /**
+     * 给定一个数组 prices ，它的第i 个元素prices[i] 表示一支给定股票第 i 天的价格。
+     *
+     * <p>你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
+     *
+     * <p>返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
+     */
+    @Source(121)
+    public int maxProfit(int[] prices) {
+        int hold = Integer.MAX_VALUE;
+        int sale = 0;
+        for (int price : prices) {
+            hold = Math.min(hold, price);
+            sale = Math.max(sale, price - hold);
+        }
+        return sale;
+    }
+
+    /**
+     * 给定一个数组 prices ，其中prices[i] 是一支给定股票第 i 天的价格。
+     *
+     * <p>设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
+     *
+     * <p>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）
+     */
+    @Source(122)
+    public int maxProfit2(int[] prices) {
+        int sale = 0;
+        int hold = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            hold = Math.max(hold, sale - prices[i]);
+            sale = Math.max(sale, hold + prices[i]);
+        }
+        return sale;
     }
 }

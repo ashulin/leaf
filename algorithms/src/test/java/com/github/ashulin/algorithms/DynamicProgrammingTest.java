@@ -20,6 +20,8 @@ package com.github.ashulin.algorithms;
 
 import org.junit.jupiter.api.Test;
 
+import static com.github.ashulin.algorithms.BinaryTreeTest.buildTreeNode;
+
 public class DynamicProgrammingTest {
 
     DynamicProgramming solution = new DynamicProgramming();
@@ -106,5 +108,27 @@ public class DynamicProgrammingTest {
         Assertions.assertEquals(2, solution.numTrees(2));
         Assertions.assertEquals(5, solution.numTrees(3));
         Assertions.assertEquals(14, solution.numTrees(4));
+    }
+
+    @Test
+    public void testRob() {
+        Assertions.assertEquals(46, solution.rob(new int[] {2, 7, 3, 9, 2, 2, 10, 1, 20}));
+        Assertions.assertEquals(4, solution.rob(new int[] {1, 2, 3, 1}));
+        Assertions.assertEquals(12, solution.rob(new int[] {2, 7, 9, 3, 1}));
+        Assertions.assertEquals(46, solution.rob2(new int[] {2, 7, 3, 9, 2, 2, 10, 1, 20}));
+        Assertions.assertEquals(4, solution.rob2(new int[] {1, 2, 3, 1}));
+        Assertions.assertEquals(12, solution.rob2(new int[] {2, 7, 9, 3, 1}));
+        Assertions.assertEquals(3, solution.rob3(new int[] {2, 3, 2}));
+        Assertions.assertEquals(7, solution.rob(buildTreeNode(3, 2, 3, null, 3, null, 1)));
+        Assertions.assertEquals(9, solution.rob(buildTreeNode(3, 4, 5, 1, 3, null, 1)));
+    }
+
+    @Test
+    public void testMaxProfit2() {
+        Assertions.assertEquals(5, solution.maxProfit(new int[] {7, 1, 5, 3, 6, 4}));
+        Assertions.assertEquals(0, solution.maxProfit(new int[] {7, 6, 4, 3, 1}));
+        Assertions.assertEquals(0, solution.maxProfit2(new int[] {7, 6, 4, 3, 1}));
+        Assertions.assertEquals(7, solution.maxProfit2(new int[] {7, 1, 5, 3, 6, 4}));
+        Assertions.assertEquals(4, solution.maxProfit2(new int[] {1, 2, 3, 4, 5}));
     }
 }

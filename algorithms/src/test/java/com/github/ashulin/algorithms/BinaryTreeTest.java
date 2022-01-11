@@ -31,7 +31,7 @@ public class BinaryTreeTest {
     private BinaryTree.TreeNode node;
 
     /** 参考leet-code的数组输入用例转换为二叉树的实现方式。 */
-    private BinaryTree.TreeNode buildTreeNode(Integer... nums) {
+    static BinaryTree.TreeNode buildTreeNode(Integer... nums) {
         if (nums == null || nums.length == 0) {
             return null;
         }

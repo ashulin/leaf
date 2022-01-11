@@ -43,12 +43,6 @@ public class DynamicProgrammingTest {
     }
 
     @Test
-    public void testMaxProfit() {
-        Assertions.assertEquals(8, solution.maxProfit(new int[] {1, 3, 2, 8, 4, 9}, 2));
-        Assertions.assertEquals(6, solution.maxProfit(new int[] {1, 3, 7, 5, 10, 3}, 3));
-    }
-
-    @Test
     public void testFib() {
         Assertions.assertEquals(1, solution.fib(2));
         Assertions.assertEquals(2, solution.fib(3));
@@ -121,14 +115,5 @@ public class DynamicProgrammingTest {
         Assertions.assertEquals(3, solution.rob3(new int[] {2, 3, 2}));
         Assertions.assertEquals(7, solution.rob(buildTreeNode(3, 2, 3, null, 3, null, 1)));
         Assertions.assertEquals(9, solution.rob(buildTreeNode(3, 4, 5, 1, 3, null, 1)));
-    }
-
-    @Test
-    public void testMaxProfit2() {
-        Assertions.assertEquals(5, solution.maxProfit(new int[] {7, 1, 5, 3, 6, 4}));
-        Assertions.assertEquals(0, solution.maxProfit(new int[] {7, 6, 4, 3, 1}));
-        Assertions.assertEquals(0, solution.maxProfit2(new int[] {7, 6, 4, 3, 1}));
-        Assertions.assertEquals(7, solution.maxProfit2(new int[] {7, 1, 5, 3, 6, 4}));
-        Assertions.assertEquals(4, solution.maxProfit2(new int[] {1, 2, 3, 4, 5}));
     }
 }

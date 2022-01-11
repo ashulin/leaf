@@ -72,28 +72,6 @@ public class DynamicProgramming {
     }
 
     /**
-     * 给定一个整数数组prices，其中第i个元素代表了第i天的股票价格 ；整数fee 代表了交易股票的手续费用。
-     *
-     * <p>你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。
-     *
-     * <p>返回获得利润的最大值。
-     *
-     * <p>注意：这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
-     */
-    @Source(714)
-    public int maxProfit(int[] prices, int fee) {
-        // 持股票, 表示当天持有股票的最大收益
-        int holdStock = -prices[0];
-        // 卖出股票, 表示当天不持有股票的最大收益
-        int saleStock = 0;
-        for (int i = 1; i < prices.length; i++) {
-            holdStock = Math.max(holdStock, saleStock - prices[i]);
-            saleStock = Math.max(saleStock, holdStock + prices[i] - fee);
-        }
-        return saleStock;
-    }
-
-    /**
      * 斐波那契数，通常用 F(n) 表示，形成的序列称为 斐波那契数列 。该数列由 0 和 1 开始，后面的每一项数字都是前面两项数字的和。
      *
      * <p>其中：F(0) = 0，F(1) = 1
@@ -344,41 +322,5 @@ public class DynamicProgramming {
         ans[0] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
         ans[1] = root.val + left[0] + right[0];
         return ans;
-    }
-
-    /**
-     * 给定一个数组 prices ，它的第i 个元素prices[i] 表示一支给定股票第 i 天的价格。
-     *
-     * <p>你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
-     *
-     * <p>返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
-     */
-    @Source(121)
-    public int maxProfit(int[] prices) {
-        int hold = Integer.MAX_VALUE;
-        int sale = 0;
-        for (int price : prices) {
-            hold = Math.min(hold, price);
-            sale = Math.max(sale, price - hold);
-        }
-        return sale;
-    }
-
-    /**
-     * 给定一个数组 prices ，其中prices[i] 是一支给定股票第 i 天的价格。
-     *
-     * <p>设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
-     *
-     * <p>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）
-     */
-    @Source(122)
-    public int maxProfit2(int[] prices) {
-        int sale = 0;
-        int hold = -prices[0];
-        for (int i = 1; i < prices.length; i++) {
-            hold = Math.max(hold, sale - prices[i]);
-            sale = Math.max(sale, hold + prices[i]);
-        }
-        return sale;
     }
 }

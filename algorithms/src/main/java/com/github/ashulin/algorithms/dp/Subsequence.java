@@ -22,6 +22,8 @@ import com.github.ashulin.algorithms.doc.Source;
 import com.github.ashulin.algorithms.doc.Tag;
 import com.github.ashulin.algorithms.doc.Type;
 
+import java.util.Arrays;
+
 @Tag(Type.DP)
 public class Subsequence {
 
@@ -167,5 +169,136 @@ public class Subsequence {
             }
         }
         return true;
+    }
+
+    /**
+     * 给定一个字符串 s 和一个字符串 t ，计算在 s 的子序列中 t 出现的个数。
+     *
+     * <p>字符串的一个 子序列 是指，通过删除一些（也可以不删除）字符且不干扰剩余字符相对位置所组成的新字符串。（例如，"ACE"是"ABCDE"的一个子序列，而"AEC"不是）
+     *
+     * <p>题目数据保证答案符合 32 位带符号整数范围。
+     */
+    @Source(115)
+    public int numDistinct(String s, String t) {
+        int n = t.length();
+        int m = s.length();
+        int[][] dp = new int[n + 1][m + 1];
+        Arrays.fill(dp[0], 1);
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (t.charAt(i - 1) == s.charAt(j - 1)) {
+                    dp[i][j] = dp[i][j - 1] + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = dp[i][j - 1];
+                }
+            }
+        }
+        return dp[n][m];
+    }
+
+    /** 给定两个单词 word1 和 word2，找到使得 word1 和 word2 相同所需的最小步数，每步可以删除任意一个字符串中的一个字符。 */
+    @Source(583)
+    public int minDistance(String word1, String word2) {
+        int n = word1.length();
+        int m = word2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
+                }
+            }
+        }
+        return n + m - 2 * dp[n][m];
+    }
+
+    /**
+     * 给你两个单词word1 和word2，请你计算出将word1转换成word2 所使用的最少操作数。
+     *
+     * <p>你可以对一个单词进行如下三种操作：
+     *
+     * <p>插入一个字符 删除一个字符
+     */
+    @Source(72)
+    public int minDistanceWithReplace(String word1, String word2) {
+        int n = word1.length();
+        int m = word2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for (int i = 1; i <= n; i++) {
+            // 对word1做删除操作
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= m; j++) {
+            // 对word2做删除操作（等同对word1做添加操作）
+            dp[0][j] = j;
+        }
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    // 当前字符相同，不需要做操作
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    // 删除word1的当前字符使得其相等：dp[i - 1][j]
+                    // 删除word2的当前字符使得其相等（等同对word1做添加操作）：dp[i][j - 1]
+                    // 替换word1的当前字符使得其相等：dp[i - 1][j - 1]
+                    dp[i][j] = Math.min(dp[i - 1][j], Math.min(dp[i][j - 1], dp[i - 1][j - 1])) + 1;
+                }
+            }
+        }
+        return dp[n][m];
+    }
+
+    /**
+     * 给你一个字符串 s ，请你统计并返回这个字符串中 回文子串 的数目。
+     *
+     * <p>回文字符串 是正着读和倒过来读一样的字符串。
+     *
+     * <p>子字符串 是字符串中的由连续字符组成的一个序列。
+     *
+     * <p>具有不同开始位置或结束位置的子串，即使是由相同的字符组成，也会被视作不同的子串。
+     */
+    @Source(647)
+    public int countSubstrings(String s) {
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+        int ans = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    if (j - i <= 1 || dp[i + 1][j - 1]) {
+                        dp[i][j] = true;
+                        ans++;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 给你一个字符串 s ，找出其中最长的回文子序列，并返回该序列的长度。
+     *
+     * <p>子序列定义为：不改变剩余字符顺序的情况下，删除某些字符或者不删除任何字符形成的一个序列。
+     */
+    @Source(516)
+    public int longestPalindromeSubseq(String s) {
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    if (j - i <= 1) {
+                        dp[i][j] = j - i + 1;
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1] + 2;
+                    }
+                } else {
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[0][n - 1];
     }
 }

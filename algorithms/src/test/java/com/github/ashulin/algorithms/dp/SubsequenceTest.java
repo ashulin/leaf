@@ -69,4 +69,36 @@ public class SubsequenceTest {
         Assertions.assertTrue(solution.isSubsequence("abc", "ahbgdc"));
         Assertions.assertFalse(solution.isSubsequence("axc", "ahbgdc"));
     }
+
+    @Test
+    public void testNumDistinct() {
+        Assertions.assertEquals(3, solution.numDistinct("rabbbit", "rabbit"));
+        Assertions.assertEquals(5, solution.numDistinct("babgbag", "bag"));
+    }
+
+    @Test
+    public void testMinDistance() {
+        Assertions.assertEquals(2, solution.minDistance("abcde", "ace"));
+        Assertions.assertEquals(2, solution.minDistance("abcde", "abc"));
+        Assertions.assertEquals(6, solution.minDistance("abc", "edf"));
+        Assertions.assertEquals(2, solution.minDistance("sea", "eat"));
+    }
+
+    @Test
+    public void testMinDistanceWithReplace() {
+        Assertions.assertEquals(3, solution.minDistanceWithReplace("horse", "ros"));
+        Assertions.assertEquals(5, solution.minDistanceWithReplace("intention", "execution"));
+    }
+
+    @Test
+    public void testCountSubstrings() {
+        Assertions.assertEquals(3, solution.countSubstrings("abc"));
+        Assertions.assertEquals(6, solution.countSubstrings("aaa"));
+    }
+
+    @Test
+    public void testLongestPalindromeSubseq() {
+        Assertions.assertEquals(4, solution.longestPalindromeSubseq("bbbab"));
+        Assertions.assertEquals(2, solution.longestPalindromeSubseq("cbbd"));
+    }
 }

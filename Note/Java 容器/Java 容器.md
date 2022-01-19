@@ -493,7 +493,7 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
 - 每个叶节点（NIL节点，空节点）是黑色的。
 - 如果一个结点是红的，则它两个子节点都是黑的。
 - 从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。
-- 平衡
+- 自平衡
 
 #### put
 
@@ -931,7 +931,7 @@ public class LinkedHashMap<K,V>
 
 ## Hashtable
 
-![Hashtable-UML](D:\Git Repository\Note\Resources\Hashtable-UML.png)
+![Hashtable-UML](..\Resources\Hashtable-UML.png)
 
 ### 属性
 
@@ -1827,7 +1827,7 @@ public class ArrayList<E> extends AbstractList<E>
 
 ## LinkedList
 
-![LinkedList-UML](D:\Git Repository\Note\Resources\LinkedList-UML.png)
+![LinkedList-UML](..\Resources\LinkedList-UML.png)
 
 ### 属性
 

@@ -1,7 +1,7 @@
 # SpringMVC
 
 ## Spring 框架的 7 个模块
-![Spring 框架](https://www.ibm.com/developerworks/cn/java/wa-spring1/spring_framework.gif "Spring 框架模块图")
+![Spring 框架](https://www.ibm.com/developerworks/cn/java/wa-spring1/spring_framework.gif)
 
 ## SpringMVC是什么？
 
@@ -9,7 +9,7 @@
 
 ## SpringMVC运行流程图
 
-![Spring 流程图](../resources/SpringMVC流程.png "Spring MVC流程图")
+![Spring 流程图](../../resources/SpringMVC流程.png)
 
 **核心架构的具体流程步骤如下：**
 

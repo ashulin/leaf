@@ -15,6 +15,7 @@
 4.   B+ Tree；
 5.   Bloomfilter（布隆过滤器）；
 6.   data skipping（跳跃表）；
+6.   Radix Trie（基数特里树/压缩前缀树）；
 7.   MPP（Massively Parallel Processing，大规模并行处理架构）；
 8.   SQL Pushdown；
 9.   Table format：metadata的组织方式;

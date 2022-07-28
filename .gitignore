@@ -1,6 +1,15 @@
+#idea file
 .idea
 *.iml
+
+#compile
 target
 */target
 out
 gen
+
+#MacOS file
+.DS_Store
+
+#backup file
+*.bkp

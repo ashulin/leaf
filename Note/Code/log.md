@@ -5,6 +5,8 @@
 -   ***log4j2***：`log4j-to-slf4j`
 -   ***java.util.logging(JUL)***：`jul-to-slf4j`
 
+>   logback在设计上绑定sfl4j，不需要logbak -> slf4j的桥接器
+
 ### SLF4J绑定实现
 
 -   ***commons-logging(JCL)*** ：`slf4j-jcl`

@@ -1499,4 +1499,47 @@ public class BinaryTree {
         // 子节点不存在监控，且未在该节点安装监控，表示该节点未被监控
         return 0;
     }
+
+    /**
+     * 路径 被定义为一条从树中任意节点出发，沿父节点-子节点连接，达到任意节点的序列。同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个 节点，且不一定经过根节点。
+     *
+     * 路径和 是路径中各节点值的总和。
+     *
+     * 给你一个二叉树的根节点 root ，返回其 最大路径和 。
+     *
+     */
+    @Source(124)
+    public int maxPathSum(TreeNode root) {
+        return maxPathSumDfs(root)[1];
+    }
+
+    private Integer[] maxPathSumDfs(TreeNode root) {
+        Integer[] leftSum = null;
+        if (root.left != null) {
+            leftSum = maxPathSumDfs(root.left);
+        }
+        Integer[] rightSum = null;
+        if (root.right != null) {
+            rightSum = maxPathSumDfs(root.right);
+        }
+        Integer[] ans = new Integer[2];
+        if (leftSum != null & rightSum != null) {
+            int max = Math.max(leftSum[0], rightSum[0]);
+            // 单边
+            ans[0] = root.val + Math.max(max, 0);
+            // 目前的最大路径和
+            ans[1] = Math.max(rightSum[1], Math.max(leftSum[1], Math.max(max, Math.max(root.val, Math.max( ans[0], leftSum[0] + rightSum[0] + root.val)))));
+        } else if (leftSum == null && rightSum == null) {
+            ans[0] = root.val;
+            ans[1] = root.val;
+        } else {
+            if (leftSum != null) {
+                rightSum = leftSum;
+            }
+            ans[0] = root.val + Math.max(rightSum[0], 0);
+            ans[1] = Math.max(rightSum[1], Math.max(rightSum[0], Math.max(root.val, ans[0])));
+        }
+
+        return ans;
+    }
 }

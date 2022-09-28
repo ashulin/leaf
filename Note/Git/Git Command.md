@@ -110,6 +110,10 @@ git push origin "develop"
 git fetch remote --tags/-t
 # 完全以远程仓库为基准更新tag
 git fetch remote --tags/-t --prune-tags/-P
+# 删除本地tag
+git tag -d ${tag-name}
+# 删除远程仓库tag
+git push ${remote} :refs/tags/tag_name
 ```
 
 ### stash
@@ -121,5 +125,12 @@ git stash list
 
 # 删除stash
 git stash drop 0
+```
+
+### clone
+
+```shell
+# clone 指定分支
+git clone -b ${branch-name} ${repository-URL}
 ```
 

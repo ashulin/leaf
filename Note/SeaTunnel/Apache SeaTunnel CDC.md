@@ -1,5 +1,13 @@
 # Apache SeaTunnel CDC
 
+| 开源组件     | Canal           | Debezium                          | Flink CDC                         |
+| ------------ | --------------- | --------------------------------- | --------------------------------- |
+| 支持数据库   | 仅支持MySQL     | 支持MySQL、Postgre SQL、Oracle 等 | 支持MySQL、Postgre SQL、Oracle 等 |
+| 同步历史数据 | 不支持          | 单并行锁表                        | 多并行无锁                        |
+| 输出端       | Kafka、RocketMQ | Kafka                             | Flink Connector                   |
+
+
+
 ## [Backgroud](https://github.com/apache/incubator-seatunnel/issues/2394)
 
 Change data capture (CDC) refers to the process of identifying and capturing changes made to data in a database and then delivering those changes in real-time to a downstream process or system.
@@ -163,7 +171,7 @@ public class CompletedSnapshotSplitInfo implements Serializable {
 
 ### Dynamic discovery of new tables
 
-![add-table](resources/Apache%20SeaTunnel%20CDC/add-table-6683872.png)
+![add-table](resources/Apache%20SeaTunnel%20CDC/add-table.png)
 
 Case 1: When a new table is discovered, the enumerator is in the snapshot phase and directly assigns a new split.
 

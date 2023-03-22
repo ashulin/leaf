@@ -489,11 +489,16 @@ public class BinaryTreeTest {
 
     @Test
     public void testMaxPathSum() {
-        Assertions.assertEquals(6, solution.maxPathSum(buildTreeNode(1,2,3)));
-        Assertions.assertEquals(42, solution.maxPathSum(buildTreeNode(-10,9,20,null,null,15,7)));
-        Assertions.assertEquals(45, solution.maxPathSum(buildTreeNode(1,9,20,null,null,15,7)));
-        Assertions.assertEquals(47, solution.maxPathSum(buildTreeNode(1,9,20,null,null,15,12)));
-        Assertions.assertEquals(-1, solution.maxPathSum(buildTreeNode(-1,-9,-20,null,null,-15,-12)));
-        Assertions.assertEquals(11, solution.maxPathSum(buildTreeNode(-1,5,null,4,null,null,2,-4)));
+        Assertions.assertEquals(6, solution.maxPathSum(buildTreeNode(1, 2, 3)));
+        Assertions.assertEquals(
+                42, solution.maxPathSum(buildTreeNode(-10, 9, 20, null, null, 15, 7)));
+        Assertions.assertEquals(
+                45, solution.maxPathSum(buildTreeNode(1, 9, 20, null, null, 15, 7)));
+        Assertions.assertEquals(
+                47, solution.maxPathSum(buildTreeNode(1, 9, 20, null, null, 15, 12)));
+        Assertions.assertEquals(
+                -1, solution.maxPathSum(buildTreeNode(-1, -9, -20, null, null, -15, -12)));
+        Assertions.assertEquals(
+                11, solution.maxPathSum(buildTreeNode(-1, 5, null, 4, null, null, 2, -4)));
     }
 }

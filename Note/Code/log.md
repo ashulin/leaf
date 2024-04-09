@@ -25,3 +25,12 @@
 
 [Log4j 2 SLF4J Binding](https://logging.apache.org/log4j/2.x/log4j-slf4j-impl/)
 
+### fluent API
+
+```java
+logger.atDebug().log("Entry number: " + i + " is " + String.valueOf(entry[i]));
+// 等价于以下代码，可以避免日志级别未启用时创建临时对象
+if(logger.isDebugEnabled()) {
+  logger.debug("Entry number: " + i + " is " + String.valueOf(entry[i]));
+}
+```
